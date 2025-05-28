@@ -2,10 +2,6 @@
 #define _USE_MATH_DEFINES
 
 
-// websockets (windows)
-//#include <winsock.h> 
-
-
 #include <iostream>
 #include <vector>
 #include <sndfile.h>
@@ -22,14 +18,12 @@
 #include <boost/uuid/uuid_io.hpp> // For converting UUID to a string
 
 // websockets (linux)
-//#include <websocketpp/config/asio_no_tls_client.hpp>
 #include <websocketpp/client.hpp>
 
 // AWS
 #include <aws/core/Aws.h>
 #include <aws/s3/S3Client.h>
 #include <aws/s3/model/GetObjectRequest.h>
-//#include <aws/s3/model/putObjectRequest.h> // doesn't work on linux
 #include <aws/s3/model/PutObjectRequest.h>
 #include <aws/core/utils/Outcome.h>
 #include <aws/core/utils/DateTime.h>
@@ -54,37 +48,6 @@
 #include <json/json.h>
 
 
-
-
-
-// to-do
-
-// if source audio is not stereo, process it instead of throwing an error.
-
-// I think I'm applying window effect to the actual signal. The resulting audio fades in and out. I should apply the 
-// window to a reference to the actual audio instead.
-
-// samples clip at times (past -1 or 1). Might be because of uninitialize sampleStorage size.
-// initiaized sampleStorage size and still have issue...
-
-// increase amount of bins. 
-// you can do this by increasing fft size (increases time it takes).
-// You can also change the bins from linear to exponential.
-
-// 5295744 (2 seconds)
-// if sample storage exceeds this size, cancel everything and make the wav with it's data.
-
-// add a normalisation feature that compresses the audio.
-
-// It takes a while to fetch audio from s3 and make the audio and then read the audio... more efficieny would be great... store in cache
-// It also takes a while to upload to s3.
-
-// Make a unique object key for every upload and send the key to server.
-
-
-// DEVELOPMENT
-//typedef websocketpp::client<websocketpp::config::asio_client> client;
-//typedef websocketpp::connection_hdl connection_hdl;
 
 // PRODUCTION
 typedef websocketpp::client<websocketpp::config::asio_tls_client> client;
@@ -189,10 +152,21 @@ std::string generateUUID() {
 
 int networking(std::vector<double> sampleStorage) {
 	try {
-
+		
 
 		websocketpp::lib::error_code ec;
-		//client::connection_ptr con = c.get_connection("ws://localhost:9000", ec); // This is for local development... I don't think it's necessary anymore
+		//
+		//
+		//
+		//////////////////////////////////////////////////////////////////////////////////////////////
+		//
+		//											NETWORKING
+		//
+		//
+		//////////////////////////////////////////////////////////////////////////////////////////////
+		//
+		//
+		//
 		client::connection_ptr con = c.get_connection("", ec); // This is for production
 
 
