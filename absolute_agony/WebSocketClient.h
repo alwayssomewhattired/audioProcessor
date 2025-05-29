@@ -1,14 +1,14 @@
 #pragma once
 
-#include <websocketpp/config/asio_client.hpp>
-#include <websocketpp/client.hpp>
 
 #include <boost/asio/ssl/context.hpp>
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
 
-#include <json/json.h>
+#include <websocketpp/config/asio_client.hpp>
+#include <websocketpp/client.hpp>
+
 
 #include <iostream>
 #include <sstream>
@@ -17,6 +17,8 @@
 #include <condition_variable>
 #include <atomic>
 #include <vector>
+
+#include <json/json.h>
 
 class WebSocketClient {
 public:
@@ -29,10 +31,11 @@ public:
 	bool connect(const std::string& uri);
 	void wait_for_connection();
 	void wait_for_condition();
+	void reset_condition();
+	bool send_message(const std::string& message);
 	int get_control_note() const {
 		return controlNote;
 	}
-	static std::string generateUUID();
 	void stop();
 
 private:
