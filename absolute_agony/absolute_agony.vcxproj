@@ -142,6 +142,9 @@
     <Text Include="CMakeLists.txt" />
     <Text Include="to-do.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="WebSocketClient.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\packages\fftw_339.3.3.9.202108273\build\native\fftw_339.targets" Condition="Exists('..\packages\fftw_339.3.3.9.202108273\build\native\fftw_339.targets')" />

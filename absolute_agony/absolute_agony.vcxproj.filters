@@ -33,4 +33,9 @@
     <Text Include="CMakeLists.txt" />
     <Text Include="to-do.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="WebSocketClient.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>

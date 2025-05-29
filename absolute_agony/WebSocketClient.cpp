@@ -42,7 +42,7 @@ public:
 	}
 
 	// Connect to server and start running the client loop on a seperate thread
-	bool connnect(const std::string& uri) {
+	bool connect(const std::string& uri) {
 		websocketpp::lib::error_code ec;
 		auto con = c.get_connection(uri, ec);
 		if (ec) {
@@ -72,10 +72,11 @@ public:
 		cv.wait(lock, [this] { return condition_met; });
 	}
 
-	// Accessor for controlNote
-	int get_control_note() const {
-		return controlNote;
-	}
+	//// Accessor for controlNote
+	//int get_control_note() const {
+	//	return controlNote;
+	//}
+
 
 	// Generate UUID string (e.g. for filenames)
 	static std::string generateUUID() {
