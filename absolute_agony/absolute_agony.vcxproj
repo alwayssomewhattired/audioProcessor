@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="absolute_agony.cpp" />
+    <ClCompile Include="AudioFileParse.cpp" />
     <ClCompile Include="WebSocketClient.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -143,6 +144,7 @@
     <Text Include="to-do.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AudioFileParse.h" />
     <ClInclude Include="WebSocketClient.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

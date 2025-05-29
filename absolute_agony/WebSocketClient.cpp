@@ -1,4 +1,3 @@
-// WebSocketClient.cpp
 
 #include "WebSocketClient.h"
 #include <iostream>

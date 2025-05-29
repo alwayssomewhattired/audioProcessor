@@ -54,201 +54,8 @@
 
 // my stuff
 #include "WebSocketClient.h"
+#include "AudioFileParse.h"
 
-
-
-//// PRODUCTION
-//typedef websocketpp::client<websocketpp::config::asio_tls_client> client;
-//typedef websocketpp::connection_hdl connection_hdl;
-//
-//// SSL/TLS
-//std::shared_ptr<boost::asio::ssl::context> on_tls_init(websocketpp::connection_hdl hdl) {
-//	std::shared_ptr<boost::asio::ssl::context> ctx =
-//		std::make_shared<boost::asio::ssl::context>(boost::asio::ssl::context::tlsv12);
-//
-//	try {
-//		ctx->set_options(boost::asio::ssl::context::default_workarounds |
-//			boost::asio::ssl::context::no_sslv2 |
-//			boost::asio::ssl::context::no_sslv3 |
-//			boost::asio::ssl::context::single_dh_use);
-//
-//		ctx->set_verify_mode(boost::asio::ssl::verify_none); // disable cert verification
-//	}
-//	catch (std::exception& e) {
-//		std::cerr << "Error in context initialization: " << e.what() << std::endl;
-//	}
-//
-//	return ctx;
-//}
-//
-//bool connected = false;
-//
-//std::atomic<bool> task_done(false);
-//
-//// main thread blocking
-//std::mutex mtx;
-//std::condition_variable cv;
-//bool condition_met = false;
-//
-//client c;
-//websocketpp::connection_hdl hdl_global;  // Store connection handle for sending messages
-//
-//
-////		GLOBAL VARS
-//int controlNote;
-//
-//
-//
-//// Callback when a message is received
-//void on_message(connection_hdl hdl, client::message_ptr msg) {
-//	//std::string payload = msg->get_payload(); // Get the message content
-//	// Parse JSON response
-//	Json::Value root;
-//	Json::CharReaderBuilder reader;
-//	std::string errs;
-//
-//	std::istringstream s(msg->get_payload());
-//	if (Json::parseFromStream(reader, s, &root, &errs)) {
-//		std::string received_message = root.get("message", "").asString();
-//		std::cout << "Message: " << received_message << std::endl;
-//		if (received_message == "source_upload") {
-//			std::cout << "Source has been uploaded!" << std::endl;
-//			std::lock_guard<std::mutex> lock(mtx);
-//			condition_met = true;
-//			cv.notify_one();
-//		}
-//		else if (received_message == "poverty_stricken") {
-//			std::cout << "Controls have been received" << std::endl;
-//			std::string noteControl = root.get("note", "").asString();
-//			int noteNum = std::stoi(noteControl);
-//			std::cout << "note: " << noteNum << std::endl;
-//			controlNote = noteNum;
-//		}
-//	}
-//	else {
-//		std::cerr << "Failed to parse JSON: " << errs << std::endl;
-//	}
-//	return;
-//}
-//
-//// Callback when connection is established
-//void on_open(connection_hdl hdl) {
-//	std::cout << "Connected to server!" << std::endl;
-//	hdl_global = hdl;  // Store the connection handle
-//	connected = true;
-//
-//}
-//
-//// Callback for connection failure
-//void on_fail(connection_hdl hdl) {
-//	std::cout << "Connection failed!" << std::endl;
-//}
-//
-//
-//// UUID based id
-//std::string generateUUID() {
-//	boost::uuids::random_generator gen;
-//	boost::uuids::uuid uuid = gen(); // Generates a random UUID
-//
-//	// Convert the UUID to a string
-//	return boost::uuids::to_string(uuid) + ".wav";
-//}
-//
-//
-//
-//int networking(std::vector<double> sampleStorage) {
-//	try {
-//		
-//
-//		websocketpp::lib::error_code ec;
-//		//
-//		//
-//		//
-//		//////////////////////////////////////////////////////////////////////////////////////////////
-//		//
-//		//											NETWORKING
-//		//
-//		//
-//		//////////////////////////////////////////////////////////////////////////////////////////////
-//		//
-//		//
-//		//
-//		client::connection_ptr con = c.get_connection("", ec); // This is for production
-//
-//
-//		if (ec) {
-//			std::cout << "Connection failed: " << ec.message() << std::endl;
-//			return 1;
-//		}
-//
-//		c.connect(con);
-//
-//		// thread splitting
-//		std::thread websocket_thread([&]() { c.run(); });
-//
-//		// now the main thread is free to do other work
-//		std::this_thread::sleep_for(std::chrono::seconds(2));
-//		std::cout << "Main thread is still running!" << std::endl;
-//
-//		// Send a message while the WebSocket loop is running
-//		while (!connected) {
-//			std::this_thread::sleep_for(std::chrono::seconds(1));  // Avoid 100% CPU usage
-//		}
-//
-//		// Join the thread when product is ready
-//		if (task_done == true) {
-//			websocket_thread.join();
-//		}
-//
-//
-//		websocket_thread.detach();
-//
-//	}
-//	catch (const std::exception& e) {
-//		std::cout << "Exception: " << e.what() << std::endl;
-//	}
-//
-//	return 0;
-//}
-
-
-
-//int networking(WebSocketClient& ws, std::vector<double> sampleStorage, std::string uri) {
-//	try {
-//		// Connect to the server (runs event loop in a seperate thread internally)
-//		if (!ws.connect(uri)) {
-//			std::cerr << "Failed to initiate connection." << std::endl;
-//			return 1;
-//		}
-//
-//		// Wait until connection is established
-//		std::cout << "waiting for connection" << std::endl;
-//
-//		ws.wait_for_connection();
-//		std::cout << "passed waiting for connection" << std::endl;
-//
-//		std::cout << "Main thread is still running!" << std::endl;
-//
-//		// Wait for message
-//		ws.wait_for_condition();
-//
-//		std::cout << "Condition met, processing audio data..." << std::endl;
-//
-//		//
-//		 //
-//		  //	 DOING BACKGROUND STUFF...
-//		   //
-//			//
-//			 //
-//
-//			// When finished, stop the client and join the thread
-//		ws.stop();
-//	}
-//	catch (const std::exception& e) {
-//		std::cerr << "Exception: " << e.what() << std::endl;
-//	}
-//	return 0;
-//}
 
 	// Generate UUID string (e.g. for filenames)
 static std::string generateUUID() {
@@ -259,95 +66,6 @@ static std::string generateUUID() {
 
 // Product length in samples
 int g_productDurationSamples = 96000;
-
-// function to read mono audio... might be fucked 
-std::vector<double> read_mono_file(const std::string filename)
-{
-	SF_INFO sfInfo;
-
-	// open input mono audio file
-	SNDFILE* inFile = sf_open(filename.c_str(), SFM_READ, &sfInfo);
-	if (!inFile) {
-		std::cerr << "Error opening audio file: " << filename << std::endl;
-		return {};
-	}
-
-	//error if input audio file is not stereo
-	if (sfInfo.channels != 1) {
-		std::cerr << "Input file is not mono!!" << std::endl;
-		return {};
-	}
-
-	size_t numFrames = sfInfo.frames;
-	int numChannels = sfInfo.channels;
-
-	// allocate buffer for reading mono data
-	std::vector<double> monoData(numFrames * numChannels);
-
-	//read the mono data into the mono buffer
-	sf_read_double(inFile, monoData.data(), numFrames * numChannels);
-
-	//close the input file
-	sf_close(inFile);
-
-	return monoData;
-
-}
-
-//function to read + convert local source audio to mono
-std::vector<double> read_audio_file(const std::string& filename)
-{
-
-	SF_INFO sfInfo;
-
-	// open input stereo audio file
-	SNDFILE* inFile = sf_open(filename.c_str(), SFM_READ, &sfInfo);
-	if (!inFile) {
-		std::cerr << "Error opening audio file: " << filename << std::endl;
-		return {};
-	}
-
-	//error if input audio file is not stereo
-	if (sfInfo.channels != 2) {
-		std::cerr << "Input file is not stereo!!" << std::endl;
-		return {};
-	}
-
-	size_t numFrames = sfInfo.frames;
-	int numChannels = sfInfo.channels;
-
-	// allocate buffer for reading stereo data
-	std::vector<double> stereoData(numFrames * numChannels);
-
-	//read the stereo data into the stereo buffer
-	sf_read_double(inFile, stereoData.data(), numFrames * numChannels);
-
-	//close the input file
-	sf_close(inFile);
-
-	// allocate the buffer for mono data
-	std::vector<double> monoData(numFrames);
-
-	//convert stereo to mono by averaging the left and right channels
-	for (size_t i = 0; i < numFrames; ++i) {
-		// left channel is at index 2*i, right channel is at index 2*i + 1
-		monoData[i] = (stereoData[2 * i] + stereoData[2 * i + 1] / 2);
-	}
-
-	sf_close(inFile);
-
-	return monoData;
-}
-
-
-
-// create function to apply a hanning window s
-void applyHanningWindow(std::vector<double>& signal, int n) {
-	for (int i = 0; i < n; i++) {
-		double hannValue = 0.5 * (1 - cos(2 * M_PI * i / (n - 1)));
-		signal[i] *= hannValue;
-	}
-}
 
 std::vector<double> sampleStorage;
 
@@ -377,54 +95,15 @@ bool isGreaterThanAll(std::vector<double>& vec, double value, int counter,
 	return true;
 }
 
-
-
-
-void ReadAudioFileFromS3(const Aws::String& bucketName, const Aws::String& objectKey) {
-	Aws::SDKOptions options;
-	Aws::InitAPI(options);
-	{
-
-		// Create S3 client
-		Aws::Client::ClientConfiguration config;
-		config.region = "us-east-2";
-		Aws::S3::S3Client s3_client(config);
-
-		std::cout << "hello" << std::endl;
-		// Create request
-		Aws::S3::Model::GetObjectRequest request;
-		request.SetBucket(bucketName);
-		request.SetKey(objectKey);
-
-
-		// Execute request
-		auto outcome = s3_client.GetObject(request);
-		if (outcome.IsSuccess()) {
-			auto& stream = outcome.GetResult().GetBody();
-			std::vector<char> s3Data((std::istreambuf_iterator<char>(stream)), std::istreambuf_iterator<char>());
-
-			std::cout << "Successfully read " << s3Data.size() << " bytes from S3" << std::endl;
-
-			// Save audio to temporary file (libsndfile requires a file)
-			std::string tempFile = "temp_audio.mp3";
-			std::ofstream outFile(tempFile, std::ios::binary);
-			outFile.write(s3Data.data(), s3Data.size());
-			outFile.close();
-		}
-		else {
-			std::cerr << "Failed to read file from S3: " << outcome.GetError().GetMessage() << std::endl;
-		}
-	}
-	Aws::ShutdownAPI(options);
-}
-
 int main()
 {
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 		/////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 
-	std::cout << "-----------WELCOME--TO--MY--SOFTWARE----------------" << std::endl;
+	std::cout <<
+		"---------------------WELCOME--TO--MY--SOFTWARE---------------------"
+		<< std::endl;
 
 	std::string uri = "";
 
@@ -434,20 +113,6 @@ int main()
 
 	WebSocketClient ws;
 	ws.connect(uri);
-
-	// PROD
-	//c.init_asio();
-
-	// Enable error logging for all error levels
-	//c.set_error_channels(websocketpp::log::elevel::all);
-
-	// Enable access logging for all access levels (includes connection open, close, frames, etc.)
-	//c.set_access_channels(websocketpp::log::alevel::all);
-	//c.set_tls_init_handler(std::bind(&on_tls_init, std::placeholders::_1));
-	//c.set_message_handler(&on_message);
-	//c.set_open_handler(&on_open);
-	//c.set_fail_handler(&on_fail);
-	// PROD
 
 	const Aws::String bucketName = "firstdemoby";
 	const Aws::String objectKey = "fetch-test.mp3";
@@ -465,12 +130,6 @@ int main()
 	sf_info.format = format;
 	int chunk_size = 8192; // Good size for note-like values
 
-	std::cout << "before connection" << std::endl;
-
-	//WEBSOCKET (LINUX)
-	//networking(ws, sampleStorage, uri);
-	std::cout << "Passed connection. Moving on..." << std::endl;
-
 	ws.wait_for_connection();
 
 	while (sampleStorage.size() < g_productDurationSamples) {
@@ -485,17 +144,9 @@ int main()
 			Json::StreamWriterBuilder writer;
 			std::string message_str = Json::writeString(writer, message);
 			std::cout << message_str << std::endl;
-			// PROD
-			//c.send(hdl_global, message_str, websocketpp::frame::opcode::text);
-			// PROD
 
-			// DEV
 			ws.send_message(message_str);
-			// DEV
 
-			// PROD
-			//task_done = true;
-			// PROD
 		}
 
 		// Create a JSON message
@@ -507,53 +158,23 @@ int main()
 		Json::StreamWriterBuilder writer;
 		std::string message_str = Json::writeString(writer, message);
 		std::cout << message_str << std::endl;
-
-		// PROD
-		//c.send(hdl_global, message_str, websocketpp::frame::opcode::text);
-		// PROD
-
-		// DEV
 		ws.send_message(message_str);
-		// DEV
 
-		// PROD
-		// Block main thread until condition_met == true
-		//{
-		//	std::unique_lock<std::mutex> lock(mtx);
-		//	cv.wait(lock, [] { return condition_met; });
-		//}
-		// PROD
-
-		// DEV
 		ws.wait_for_condition(); // Wait until 'source_upload' message is received
-		// DEV
 
 		std::cout << "WE GOOD BABY" << std::endl;
 		std::cout << "note: " << ws.get_control_note() << std::endl;
 
 
-
-
-		ReadAudioFileFromS3(bucketName, objectKey);
-		std::vector<double> audio_data = read_audio_file("temp_audio.mp3"); // This is for AWS fetched
-		if (audio_data.empty()) {
-			std::cout << "Time to mono function instead" << std::endl;
-			audio_data = read_mono_file("temp_audio.mp3");
-			if (audio_data.empty()) {
-				std::cout << "stero AND mono functions did not work" << std::endl;
-				return 1;
-			}
-		}
-		int n = audio_data.size();
+		AudioFileParse parser;
+		parser.downloadAudioFileFromS3(bucketName, objectKey);
+		parser.readAudioFileAsMono("temp_audio.mp3");
+		int n = parser.size();
 		std::cout << n << std::endl;
-
-		// make analysis output file
-		//std::ofstream outputFile("new_fft.txt");
-		//std::ofstream magFile("mag.txt");
 
 		int num_chunks = (n + chunk_size - 1) / chunk_size; // calculate all the number of chunks
 
-		applyHanningWindow(audio_data, n);
+		parser.applyHanningWindow();
 
 		// allocate memory for the real input and complex output of this chunk
 		int fft_size = chunk_size / 2 + 1; // size of complex output for this chunk
@@ -588,7 +209,10 @@ int main()
 
 			// copy the audio source data into the real_input array
 			std::fill(real_input, real_input + chunk_size, 0); // Zero out the input
-			std::copy(audio_data.begin() + start, audio_data.begin() + end, real_input);
+	
+			const std::vector<double>& audio = parser.getAudioData();
+			std::vector<double> audio_copy = parser.getAudioData();
+			std::copy(audio.begin() + start, audio.begin() + end, real_input);
 
 			//execute the fft
 			fftw_execute(plan);
@@ -606,9 +230,7 @@ int main()
 					<< magnitudes[i] << "\n";*/
 			}
 
-			//check magnitudes for wanted frequencies
-			isGreaterThanAll(magnitudes, magnitudes[ws.get_control_note()], counter, audio_data, chunk_size);
-			//} // curly for output file
+			isGreaterThanAll(magnitudes, magnitudes[ws.get_control_note()], counter, audio_copy, chunk_size);
 
 		}
 		// I wonder if this is supposed to be in the for loop.
@@ -682,15 +304,8 @@ int main()
 				std::string message_str = Json::writeString(writer, message);
 				std::cout << message_str << std::endl;
 
-				// PROD
-	/*			c.send(hdl_global, message_str, websocketpp::frame::opcode::text);
-				task_done = true;*/
-				// PROD
-
-				// DEV
 				ws.send_message(message_str);
 				ws.wait_for_condition();
-				// DEV
 			}
 			else {
 				std::cerr << "Error uploading product: " << put_object_outcome.GetError().GetMessage() << std::endl;
@@ -705,15 +320,7 @@ int main()
 		fftw_free(real_input);
 		fftw_free(complex_output);
 
-		// PROD
-		// i think this is how you relock a condition
-	/*	std::lock_guard<std::mutex> lock(mtx);
-		condition_met = false;*/
-		// PROD
-
-		// DEV
 		ws.reset_condition();
-		// DEV
 
 	}
 

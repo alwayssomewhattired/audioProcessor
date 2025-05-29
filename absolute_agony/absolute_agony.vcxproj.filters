@@ -24,6 +24,9 @@
     <ClCompile Include="WebSocketClient.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="AudioFileParse.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -35,6 +38,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WebSocketClient.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioFileParse.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
