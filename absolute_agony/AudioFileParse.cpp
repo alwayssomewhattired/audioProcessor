@@ -10,7 +10,6 @@
 #include <iterator>
 
 
-//AudioFileParse::AudioFileParse(const std::string& region)
 
 AudioFileParse::AudioFileParse(const std::string& region)
 	: m_region(region), m_sdkInitialized(false) {

@@ -25,12 +25,13 @@ FFTProcessor::~FFTProcessor() {
 	}
 }
 
-void FFTProcessor::compute(const std::vector<double>& audioData, int controlNote, bool resetSamples) {
+void FFTProcessor::compute(const std::vector<double>& audioData, double targetFrequency, bool resetSamples) {
 	m_magnitudeChunks.clear();
 	if (resetSamples) {
 		m_sampleStorage.clear();
 	}
 
+	int controlNoteBin = static_cast<int>(targetFrequency * m_chunkSize / m_sampleRate);
 	int n = audioData.size();
 	int numChunks = (n + m_chunkSize - 1) / m_chunkSize;
 
@@ -53,14 +54,14 @@ void FFTProcessor::compute(const std::vector<double>& audioData, int controlNote
 		m_magnitudeChunks.push_back(std::move(magnitudes));
 		//std::cout << "controlNote: " << controlNote << ", m_fftSize: " << m_fftSize << std::endl;
 
-		if (controlNote >= 0 && controlNote < m_fftSize) {
-			double controlMagnitude = m_magnitudeChunks.back()[controlNote];
+		if (controlNoteBin >= 0 && controlNoteBin < m_fftSize) {
+			double controlMagnitude = m_magnitudeChunks.back()[controlNoteBin];
 			if (isProminentPeak(m_magnitudeChunks.back(), controlMagnitude)) {
 				storeChunkIfProminent(audioData, chunk, controlMagnitude);
 			}
 			}
 			else {
-				std::cerr << "Warning: controlNote index (" << controlNote
+				std::cerr << "Warning: controlNote index (" << controlNoteBin
 					<< ") is out of range [0, " << m_fftSize - 1 << "]" << std::endl;
 		}
 	}

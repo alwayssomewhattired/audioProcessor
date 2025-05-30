@@ -34,7 +34,7 @@ public:
 	void reset_condition();
 	bool send_message(const std::string& message);
 	int get_control_note() const {
-		return controlNote;
+		return targetFrequency;
 	}
 	void stop();
 
@@ -54,7 +54,7 @@ private:
 	std::condition_variable cv;
 	bool condition_met;
 
-	int controlNote;
+	double targetFrequency;
 
 	std::thread websocket_thread;
 };

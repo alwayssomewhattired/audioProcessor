@@ -6,7 +6,7 @@
 #include <boost/asio/ssl/context.hpp>
 
 WebSocketClient::WebSocketClient()
-    : connected(false), task_done(false), controlNote(20),
+    : connected(false), task_done(false), targetFrequency(400),
     c(), hdl_global(), mtx(), cv(), condition_met(false)
 {
     c.init_asio();
@@ -113,9 +113,9 @@ void WebSocketClient::on_message(connection_hdl, client::message_ptr msg) {
         else if (received_message == "poverty_stricken") {
             std::cout << "Controls have been received" << std::endl;
             std::string noteControl = root.get("note", "").asString();
-            int noteNum = std::stoi(noteControl);
+            double noteNum = std::stoi(noteControl);
             std::cout << "note: " << noteNum << std::endl;
-            controlNote = noteNum;
+            targetFrequency = noteNum;
         }
     }
     else {

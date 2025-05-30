@@ -27,6 +27,9 @@
     <ClCompile Include="AudioFileParse.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="AudioUploader.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
     <ClCompile Include="FFTProcessor.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -50,6 +53,9 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="utils.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioUploader.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

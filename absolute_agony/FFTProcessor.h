@@ -8,7 +8,7 @@ public:
 	FFTProcessor(int chunkSize, int sampleRate);
 	~FFTProcessor();
 
-	void compute(const std::vector<double>& audioData, int controlNote, bool resetSamples = true);
+	void compute(const std::vector<double>& audioData, double targetFrequency, bool resetSamples = true);
 	const std::vector<std::vector<double>>& getMagnitudes() const;
 	const std::vector<double>& getSampleStorage() const;
 

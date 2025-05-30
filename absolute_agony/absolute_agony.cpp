@@ -53,6 +53,7 @@
 #include "WebSocketClient.h"
 #include "AudioFileParse.h"
 #include "FFTProcessor.h"
+#include "AudioUploader.h"
 
 
 	// Generate UUID string (e.g. for filenames)
@@ -150,73 +151,78 @@ int main()
 		std::cout << "sampleStorage: " << fftProcessor.getSampleStorage().size() << std::endl;
 
 		if (fftProcessor.getSampleStorage().size() >= g_productDurationSamples) {
-			// open wav file for writing
-			infiniteFile = sf_open(outputName, SFM_WRITE, &sf_info);
-			if (!infiniteFile) {
-				std::cerr << "error opening file: " << outputName << std::endl;
-				return 1;
-			}
 
-			// write data for writing wav file
-			sf_count_t framesWritten = sf_writef_double(infiniteFile, fftProcessor.getSampleStorage().data(), fftProcessor.getSampleStorage().size());
-			if (framesWritten != fftProcessor.getSampleStorage().size()) {
-				std::cerr << "Error writing data: " << sf_strerror(infiniteFile) << std::endl;
-			}
+			AudioUploader uploader(bucketName, "us-east-2");
+			uploader.uploadIfReady(fftProcessor.getSampleStorage(), g_productDurationSamples, outputName, ws);
 
-			sf_close(infiniteFile);
 
-			// open the file to upload to s3
-			std::ifstream file_stream(outputName, std::ios::in | std::ios::binary);
-			if (!file_stream) {
-				std::cerr << "Error: Could not open " << outputName << " for s3 upload" << std::endl;
-				return 1;
-			}
+			//// open wav file for writing
+			//infiniteFile = sf_open(outputName, SFM_WRITE, &sf_info);
+			//if (!infiniteFile) {
+			//	std::cerr << "error opening file: " << outputName << std::endl;
+			//	return 1;
+			//}
 
-			// Initialize the AWS SDK
-			Aws::SDKOptions options;
-			Aws::InitAPI(options);
+			//// write data for writing wav file
+			//sf_count_t framesWritten = sf_writef_double(infiniteFile, fftProcessor.getSampleStorage().data(), fftProcessor.getSampleStorage().size());
+			//if (framesWritten != fftProcessor.getSampleStorage().size()) {
+			//	std::cerr << "Error writing data: " << sf_strerror(infiniteFile) << std::endl;
+			//}
 
-			// Create S3 client
-			Aws::Client::ClientConfiguration config;
-			config.region = "us-east-2";
-			Aws::S3::S3Client s3_client(config);
+			//sf_close(infiniteFile);
 
-			// productKey (UUID)
-			std::string productKey = generateUUID();
+			//// open the file to upload to s3
+			//std::ifstream file_stream(outputName, std::ios::in | std::ios::binary);
+			//if (!file_stream) {
+			//	std::cerr << "Error: Could not open " << outputName << " for s3 upload" << std::endl;
+			//	return 1;
+			//}
 
-			// Create a putObjectRequest
-			Aws::S3::Model::PutObjectRequest object_request;
-			Aws::String tag_string = "expire="; // Key with empty value
-			object_request.SetBucket(bucketName);
-			object_request.SetKey(productKey);
-			object_request.SetTagging(tag_string);
+			//// Initialize the AWS SDK
+			//Aws::SDKOptions options;
+			//Aws::InitAPI(options);
 
-			// Attatch the file stream to the putObject Request
-			auto input_data = Aws::MakeShared<Aws::IOStream>("AllocTag", file_stream.rdbuf());
-			object_request.SetBody(input_data);
+			//// Create S3 client
+			//Aws::Client::ClientConfiguration config;
+			//config.region = "us-east-2";
+			//Aws::S3::S3Client s3_client(config);
 
-			// Perform the file upload to S3
-			auto put_object_outcome = s3_client.PutObject(object_request);
+			//// productKey (UUID)
+			//std::string productKey = generateUUID();
 
-			if (put_object_outcome.IsSuccess()) {
-				std::cout << "Product successfully uploaded to S3!" << std::endl;
-				Json::Value message;
-				message["action"] = "sendMessage";
-				message["body"] = "finish_now";
+			//// Create a putObjectRequest
+			//Aws::S3::Model::PutObjectRequest object_request;
+			//Aws::String tag_string = "expire="; // Key with empty value
+			//object_request.SetBucket(bucketName);
+			//object_request.SetKey(productKey);
+			//object_request.SetTagging(tag_string);
 
-				// Convert the JSON object to a string
-				Json::StreamWriterBuilder writer;
-				std::string message_str = Json::writeString(writer, message);
-				std::cout << message_str << std::endl;
+			//// Attatch the file stream to the putObject Request
+			//auto input_data = Aws::MakeShared<Aws::IOStream>("AllocTag", file_stream.rdbuf());
+			//object_request.SetBody(input_data);
 
-				ws.send_message(message_str);
-				ws.wait_for_condition();
-			}
-			else {
-				std::cerr << "Error uploading product: " << put_object_outcome.GetError().GetMessage() << std::endl;
-			}
+			//// Perform the file upload to S3
+			//auto put_object_outcome = s3_client.PutObject(object_request);
 
-			Aws::ShutdownAPI(options);
+			//if (put_object_outcome.IsSuccess()) {
+			//	std::cout << "Product successfully uploaded to S3!" << std::endl;
+			//	Json::Value message;
+			//	message["action"] = "sendMessage";
+			//	message["body"] = "finish_now";
+
+			//	// Convert the JSON object to a string
+			//	Json::StreamWriterBuilder writer;
+			//	std::string message_str = Json::writeString(writer, message);
+			//	std::cout << message_str << std::endl;
+
+			//	ws.send_message(message_str);
+			//	ws.wait_for_condition();
+			//}
+			//else {
+			//	std::cerr << "Error uploading product: " << put_object_outcome.GetError().GetMessage() << std::endl;
+			//}
+
+			//Aws::ShutdownAPI(options);
 
 		}
 
