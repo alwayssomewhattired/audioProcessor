@@ -25,19 +25,15 @@ WebSocketClient::~WebSocketClient() {
 bool WebSocketClient::connect(const std::string& uri) {
     websocketpp::lib::error_code ec;
     auto con = c.get_connection(uri, ec);
-    std::cout << "this is ws" << std::endl;
 
     if (ec) {
         std::cerr << "Connection failed: " << ec.message() << std::endl;
         return false;
     }
-    std::cout << "this is ws.connect" << std::endl;
 
     c.connect(con);
-    std::cout << "this is ws.connect" << std::endl;
 
     websocket_thread = std::thread([this]() { c.run(); });
-    std::cout << "this is finished" << std::endl;
 
     return true;
 }

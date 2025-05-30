@@ -133,6 +133,7 @@
   <ItemGroup>
     <ClCompile Include="absolute_agony.cpp" />
     <ClCompile Include="AudioFileParse.cpp" />
+    <ClCompile Include="FFTProcessor.cpp" />
     <ClCompile Include="WebSocketClient.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -145,6 +146,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioFileParse.h" />
+    <ClInclude Include="FFTProcessor.h" />
+    <ClInclude Include="utils.h" />
     <ClInclude Include="WebSocketClient.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

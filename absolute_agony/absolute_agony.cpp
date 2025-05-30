@@ -1,7 +1,4 @@
 
-
-
-
 #define NOMINMAX
 
 #define _USE_MATH_DEFINES
@@ -55,6 +52,7 @@
 // my stuff
 #include "WebSocketClient.h"
 #include "AudioFileParse.h"
+#include "FFTProcessor.h"
 
 
 	// Generate UUID string (e.g. for filenames)
@@ -64,36 +62,15 @@ static std::string generateUUID() {
 	return boost::uuids::to_string(uuid) + ".wav";
 }
 
+
+
+/////////////GLOBALS/////////////////
+
 // Product length in samples
 int g_productDurationSamples = 96000;
 
-std::vector<double> sampleStorage;
+////////////////////////////////////
 
-// create a function for finding and storing prominent frequency samples
-bool isGreaterThanAll(std::vector<double>& vec, double value, int counter,
-	std::vector<double>& samples, int CHUNK_SIZE) {
-	for (double element : vec) {
-		if (value < element || value == 0) {
-			return false;
-		}
-	}
-	int CHUNK_SLICE_START = counter * CHUNK_SIZE;
-	int CHUNK_SLICE_END = CHUNK_SLICE_START + CHUNK_SIZE;
-	//sampleStorage.reserve(5295743); // This literally does nothing lol
-	//store and normalize samples
-	for (int i = CHUNK_SLICE_START; i < CHUNK_SLICE_END; ++i) {
-		if (samples[i] < -1) {
-			samples[i] = -1;
-		}
-		else if (samples[i] > 1) {
-			samples[i] = 1;
-		}
-		//sampleStorage.emplace_back(samples[i]); // This might be breaking					I don't know
-		sampleStorage.push_back(samples[i]); // This might fix it							which is better...
-		//std::cout << "stored samples!!!: " << samples[i] << std::endl;
-	}
-	return true;
-}
 
 int main()
 {
@@ -102,7 +79,7 @@ int main()
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 
 	std::cout <<
-		"---------------------WELCOME--TO--MY--SOFTWARE---------------------"
+		"-------------------------------WELCOME--TO--MY--SOFTWARE-------------------------------"
 		<< std::endl;
 
 	std::string uri = "";
@@ -132,22 +109,10 @@ int main()
 
 	ws.wait_for_connection();
 
-	while (sampleStorage.size() < g_productDurationSamples) {
-		std::cout << sampleStorage.size() << std::endl;
+	FFTProcessor fftProcessor(chunk_size, sampleRate);
 
-		if (sampleStorage.size() >= g_productDurationSamples) {
-			Json::Value message;
-			message["action"] = "sendMessage";
-			message["body"] = "finish_now";
 
-			// Convert the JSON object to a string
-			Json::StreamWriterBuilder writer;
-			std::string message_str = Json::writeString(writer, message);
-			std::cout << message_str << std::endl;
-
-			ws.send_message(message_str);
-
-		}
+	while (fftProcessor.getSampleStorage().size() < g_productDurationSamples) {
 
 		// Create a JSON message
 		Json::Value message;
@@ -176,75 +141,15 @@ int main()
 
 		parser.applyHanningWindow();
 
-		// allocate memory for the real input and complex output of this chunk
-		int fft_size = chunk_size / 2 + 1; // size of complex output for this chunk
-		double* real_input = fftw_alloc_real(chunk_size); // real input array
-		if (real_input == nullptr) { // handle allocation error
-			std::cerr << "Failed to allocate real memory" << std::endl;
-			exit(1);
-		}
-		fftw_complex* complex_output = fftw_alloc_complex(fft_size); // complex output array
-		if (complex_output == nullptr) { // handle allocation error
-			std::cerr << "Failed to allocated complex memory" << std::endl;
-		}
 
-		// create fftw plan for this chunk
-		fftw_plan plan = fftw_plan_dft_r2c_1d(chunk_size, real_input, complex_output, FFTW_MEASURE);
+		fftProcessor.compute(parser.getAudioData(), ws.get_control_note(), false);
 
-		// create vector for magnitude storage
-		std::vector<double> magnitudes(chunk_size);
+		const auto& chunks = fftProcessor.getMagnitudes();
+		const std::vector<double>& audio_copy = parser.getAudioData();
 
-		int counter = -1;
+		std::cout << "sampleStorage: " << fftProcessor.getSampleStorage().size() << std::endl;
 
-		// loop over each chunk
-		for (int chunk = 0; chunk < num_chunks - 1; ++chunk) { // num_chuks is strange
-			++counter;
-			std::cout << "chunk: " << chunk << std::endl;
-			std::cout << "num chunk " << num_chunks << std::endl;
-			//std::cout << "counter: " << counter << std::endl;
-			// Determine the starting and ending index for the chunk
-			int start = chunk * chunk_size;
-			int end = std::min<int>(start + chunk_size, n); // added <int> identifier
-
-
-			// copy the audio source data into the real_input array
-			std::fill(real_input, real_input + chunk_size, 0); // Zero out the input
-	
-			const std::vector<double>& audio = parser.getAudioData();
-			std::vector<double> audio_copy = parser.getAudioData();
-			std::copy(audio.begin() + start, audio.begin() + end, real_input);
-
-			//execute the fft
-			fftw_execute(plan);
-
-			// open file to store analysis
-			//if (outputFile.is_open()) {
-					// process the complex output
-			for (int i = 0; i < fft_size; ++i) {
-				//std::cout << "samples: " << i << " " << audio_data[i + chunk_size] << std::endl;
-				double freq = static_cast<double>(i) * sampleRate / chunk_size;
-				magnitudes[i] = std::sqrt(complex_output[i][0] * complex_output[i][0]
-					+ complex_output[i][1] * complex_output[i][1]);
-				// push freq/bins/magnitude to text file
-			/*	outputFile << "bin " << i << ": Frequency = " << freq << " Hz, magnitude = "
-					<< magnitudes[i] << "\n";*/
-			}
-
-			isGreaterThanAll(magnitudes, magnitudes[ws.get_control_note()], counter, audio_copy, chunk_size);
-
-		}
-		// I wonder if this is supposed to be in the for loop.
-		//outputFile.close();
-
-	/*	if (magFile.is_open()) {
-			for (double element : sampleStorage) {
-				magFile << "sample: " << element << std::endl;
-			}
-		}
-		magFile.close();*/
-
-
-		if (sampleStorage.size() >= g_productDurationSamples) {
+		if (fftProcessor.getSampleStorage().size() >= g_productDurationSamples) {
 			// open wav file for writing
 			infiniteFile = sf_open(outputName, SFM_WRITE, &sf_info);
 			if (!infiniteFile) {
@@ -253,8 +158,8 @@ int main()
 			}
 
 			// write data for writing wav file
-			sf_count_t framesWritten = sf_writef_double(infiniteFile, sampleStorage.data(), sampleStorage.size()); // might need 'sizeof' for size
-			if (framesWritten != sampleStorage.size()) {
+			sf_count_t framesWritten = sf_writef_double(infiniteFile, fftProcessor.getSampleStorage().data(), fftProcessor.getSampleStorage().size());
+			if (framesWritten != fftProcessor.getSampleStorage().size()) {
 				std::cerr << "Error writing data: " << sf_strerror(infiniteFile) << std::endl;
 			}
 
@@ -314,11 +219,6 @@ int main()
 			Aws::ShutdownAPI(options);
 
 		}
-
-		//clean up
-		fftw_destroy_plan(plan);
-		fftw_free(real_input);
-		fftw_free(complex_output);
 
 		ws.reset_condition();
 
