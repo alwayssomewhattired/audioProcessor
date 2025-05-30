@@ -10,7 +10,8 @@
 #include "WebSocketClient.h"
 #include "utils.h"
 
-AudioUploader::AudioUploader(const std::string& bucket, const std::string& region) {
+AudioUploader::AudioUploader(const std::string& bucket, const std::string& region)
+: bucketName(bucket) {
 	options = Aws::SDKOptions{};
 	Aws::InitAPI(options);
 	config.region = region;
@@ -42,16 +43,19 @@ bool AudioUploader::uploadIfReady(const std::vector<double>& samples, size_t sam
 
 	std::string productKey = generateUUID();
 
+	std::cout << "sampledinfinite: " << productKey << std::endl;
+
 	Aws::S3::Model::PutObjectRequest object_request;
 	object_request.SetBucket(bucketName);
 	object_request.SetKey(productKey);
-	//object_request.SetTagging("expire=");
+	object_request.SetTagging("expire=");
 	object_request.SetBody(input_data);
 
 	auto outcome = s3_client->PutObject(object_request);
 	if (outcome.IsSuccess()) {
 		std::cout << "Product successfully uploaded to S3!" << std::endl;
 		notifyWebSocket(ws);
+		input_data.reset();
 		return true;
 	}
 	else {
@@ -65,6 +69,7 @@ bool AudioUploader::writeWavFile(const std::vector<double>& samples, const std::
 	sf_info.channels = 1;
 	sf_info.samplerate = 44100;
 	sf_info.format = SF_FORMAT_WAV | SF_FORMAT_PCM_16;
+
 
 	SNDFILE* file = sf_open(filename.c_str(), SFM_WRITE, &sf_info);
 	if (!file) {

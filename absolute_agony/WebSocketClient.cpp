@@ -6,7 +6,7 @@
 #include <boost/asio/ssl/context.hpp>
 
 WebSocketClient::WebSocketClient()
-    : connected(false), task_done(false), targetFrequency(400),
+    : connected(false), task_done(false), targetFrequency(200),
     c(), hdl_global(), mtx(), cv(), condition_met(false)
 {
     c.init_asio();

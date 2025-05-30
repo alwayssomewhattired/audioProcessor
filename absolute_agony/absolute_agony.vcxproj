@@ -146,6 +146,7 @@
     <Text Include="to-do.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Downloads\dotenv.h" />
     <ClInclude Include="AudioFileParse.h" />
     <ClInclude Include="AudioUploader.h" />
     <ClInclude Include="FFTProcessor.h" />
