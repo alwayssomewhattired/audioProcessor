@@ -10,6 +10,7 @@ bin/
 lib/
 build/
 *.d
+launch.vs.json
 
 
 # User-specific files
