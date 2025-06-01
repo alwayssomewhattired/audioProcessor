@@ -54,6 +54,8 @@ while true; do
 		else
 			echo "[$(date)] Git pull failed. Skipping build/run."
 		fi
+	else
+		echo "All up to date! Nothing to do."
 	fi
 
 	sleep 60
