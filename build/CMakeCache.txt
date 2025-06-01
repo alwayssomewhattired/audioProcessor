@@ -14,6 +14,15 @@
 # EXTERNAL cache entries
 ########################
 
+//Path to a file.
+AWSSDK_CORE_HEADER_FILE:FILEPATH=/vcpkg/installed/x64-linux/include/aws/core/Aws.h
+
+//Path to a library.
+AWSSDK_CORE_LIB_FILE:FILEPATH=/vcpkg/installed/x64-linux/lib/libaws-cpp-sdk-core.a
+
+//The directory containing a CMake configuration file for AWSSDK.
+AWSSDK_DIR:PATH=/vcpkg/installed/x64-linux/share/awssdk
+
 //Path to a program.
 CMAKE_ADDR2LINE:FILEPATH=/usr/bin/addr2line
 
@@ -138,6 +147,9 @@ CMAKE_OBJCOPY:FILEPATH=/usr/bin/objcopy
 //Path to a program.
 CMAKE_OBJDUMP:FILEPATH=/usr/bin/objdump
 
+//No help, variable specified on the command line.
+CMAKE_PREFIX_PATH:UNINITIALIZED=/vcpkg/installed/x64-linux/share
+
 //Value Computed by CMake
 CMAKE_PROJECT_DESCRIPTION:STATIC=
 
@@ -212,8 +224,12 @@ CMAKE_TOOLCHAIN_FILE:UNINITIALIZED=/vcpkg/scripts/buildsystems/vcpkg.cmake
 // Studio IDE projects all commands are done without /nologo.
 CMAKE_VERBOSE_MAKEFILE:BOOL=ON
 
+//Flag to upgrade the C++ standard used. The default is 11. The
+// minimum is 11.
+CPP_STANDARD:STRING=11
+
 //The directory containing a CMake configuration file for FFTW3.
-FFTW3_DIR:PATH=FFTW3_DIR-NOTFOUND
+FFTW3_DIR:PATH=/vcpkg/installed/x64-linux/share/fftw3
 
 //Value Computed by CMake
 MyProject_BINARY_DIR:STATIC=/home/ec2-user/audioProcessor/build
@@ -223,6 +239,24 @@ MyProject_IS_TOP_LEVEL:STATIC=ON
 
 //Value Computed by CMake
 MyProject_SOURCE_DIR:STATIC=/home/ec2-user/audioProcessor
+
+//No help, variable specified on the command line.
+VCPKG_TARGET_TRIPLET:UNINITIALIZED=x64-linux
+
+//The directory containing a CMake configuration file for aws-c-http.
+aws-c-http_DIR:PATH=/vcpkg/installed/x64-linux/share/aws-c-http
+
+//The directory containing a CMake configuration file for aws-c-io.
+aws-c-io_DIR:PATH=/vcpkg/installed/x64-linux/share/aws-c-io
+
+//The directory containing a CMake configuration file for aws-cpp-sdk-core.
+aws-cpp-sdk-core_DIR:PATH=/vcpkg/installed/x64-linux/share/aws-cpp-sdk-core
+
+//The directory containing a CMake configuration file for aws-crt-cpp.
+aws-crt-cpp_DIR:PATH=/vcpkg/installed/x64-linux/share/aws-crt-cpp
+
+//The directory containing a CMake configuration file for s2n.
+s2n_DIR:PATH=/vcpkg/installed/x64-linux/share/s2n
 
 
 ########################
@@ -309,6 +343,8 @@ CMAKE_GENERATOR_INSTANCE:INTERNAL=
 CMAKE_GENERATOR_PLATFORM:INTERNAL=
 //Name of generator toolset.
 CMAKE_GENERATOR_TOOLSET:INTERNAL=
+//Have include pthread.h
+CMAKE_HAVE_PTHREAD_H:INTERNAL=
 //Source directory with the top level CMakeLists.txt file for this
 // project
 CMAKE_HOME_DIRECTORY:INTERNAL=/home/ec2-user/audioProcessor
@@ -374,4 +410,10 @@ CMAKE_STRIP-ADVANCED:INTERNAL=1
 CMAKE_UNAME:INTERNAL=/usr/bin/uname
 //ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
+//The OpenSSL include directory
+LibCrypto_INCLUDE_DIR:INTERNAL=/vcpkg/installed/x64-linux/include
+//The OpenSSL crypto shared library
+LibCrypto_SHARED_LIBRARY:INTERNAL=/vcpkg/installed/x64-linux/lib/libcrypto.a
+//The OpenSSL crypto static library
+LibCrypto_STATIC_LIBRARY:INTERNAL=/vcpkg/installed/x64-linux/lib/libcrypto.a
 
