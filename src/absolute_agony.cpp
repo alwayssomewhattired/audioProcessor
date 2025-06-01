@@ -76,7 +76,7 @@ struct Config {
 int main()
 {
 
-
+	// not bad
 	std::cout <<
 		"--------------------------------------------WELCOME--TO--MY--SOFTWARE--------------------------------------------"
 		<< std::endl;
