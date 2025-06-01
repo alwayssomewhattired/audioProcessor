@@ -7,7 +7,7 @@
 *.0
 *.exe
 bin/
-
+CMakeSettings.json
 *.d
 launch.vs.json
 
