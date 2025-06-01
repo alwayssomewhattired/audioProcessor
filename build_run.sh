@@ -22,7 +22,7 @@ while true; do
 
 	if [ "$LOCAL_HASH" != "$REMOTE_HASH" ]; then
 		echo "[$(date)] New commit detected. Pulling..."
-		if git pull -ff-only "$REMOTE" "$BRANCH"; then
+		if git pull --ff-only "$REMOTE" "$BRANCH"; then
 			echo "[$(date)] Pull complete. Building..."
 
 			mkdir -p "$BUILD_DIR"
