@@ -28,7 +28,7 @@ find_package(Boost REQUIRED COMPONENTS system thread random)
 find_package(SndFile REQUIRED)
 find_package(jsoncpp REQUIRED)
 find_package(OpenSSL REQUIRED)
-/vcpkg/installed/x64-linux/include/json
+"/vcpkg/installed/x64-linux/include/json"
 
 
 target_link_libraries(absolute_agony PRIVATE
