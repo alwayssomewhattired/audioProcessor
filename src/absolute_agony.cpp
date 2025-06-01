@@ -50,9 +50,6 @@
 // JSON for messaging
 #include <json/json.h>
 
-// lib
-#include "dotenv.h"
-
 
 // my stuff
 #include "WebSocketClient.h"
@@ -81,18 +78,6 @@ int main()
 		"--------------------------------------------WELCOME--TO--MY--SOFTWARE--------------------------------------------"
 		<< std::endl;
 
-	std::cout << "Current working dir: " << std::filesystem::current_path() << std::endl;
-
-	dotenv::init();  // Load .env file
-
-	const char* raw_uri = std::getenv("MY_WEBSOCKET_URI");
-	std::string uri = raw_uri ? std::string(raw_uri) : dotenv::getenv("MY_WEBSOCKET_URI");
-
-	if (uri.empty()) {
-		std::cerr << "MY_WEBSOCKET_URI not set in system or .env" << std::endl;
-		return 1;
-	}
-
 
 	Config config = {
 	"us-east-2",           // region
@@ -104,6 +89,14 @@ int main()
 	1,					   // channels
 	96000,				   // productDurationSamples
 	};
+
+	const char* uri = std::getenv("MY_WEBSOCKET_URI");
+	if (!uri) {
+		std::cerr << "MY_WEBSOCKET_URI is not set" << std::endl;
+		return 1;
+	}
+
+
 
 	WebSocketClient ws;
 	ws.connect(uri);
