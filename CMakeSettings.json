@@ -10,7 +10,7 @@
       "cmakeCommandArgs": "",
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
-      "cmakeToolchain": "C:/VCPKG/vcpkg/scripts/buildsystems/vcpkg.cmake"
+      "cmakeToolchain": "/vcpkg/scripts/buildsystems/vcpkg.cmake"
     }
   ]
 }
