@@ -10,7 +10,7 @@ bin/
 CMakeSettings.json
 *.d
 launch.vs.json
-
+build
 
 # User-specific files
 *.rsuser
