@@ -38,5 +38,5 @@ target_link_libraries(absolute_agony PRIVATE
     OpenSSL::SSL
     OpenSSL::Crypto
     SndFile::sndfile
-    jsoncpp_lib
+    jsoncpp
 )
