@@ -25,7 +25,7 @@ find_package(FFTW3 CONFIG REQUIRED)
 find_package(AWSSDK CONFIG REQUIRED COMPONENTS s3 core)
 find_package(Boost REQUIRED COMPONENTS system thread random)
 find_package(SndFile REQUIRED)
-find_package(jsoncpp CONFIG REQUIRED)
+find_package(jsoncpp REQUIRED)
 find_package(OpenSSL REQUIRED)
 
 target_link_libraries(absolute_agony PRIVATE
