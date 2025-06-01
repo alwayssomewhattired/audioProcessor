@@ -7,7 +7,6 @@
 *.0
 *.exe
 bin/
-CMakeSettings.json
 
 build/
 *.d
