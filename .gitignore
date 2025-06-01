@@ -10,6 +10,7 @@ bin/
 CMakeSettings.json
 *.d
 launch.vs.json
+git-auto-pull.service
 
 
 # User-specific files
