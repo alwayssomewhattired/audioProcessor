@@ -9,7 +9,10 @@ BUILD_DIR="./build"
 mkdir -p "$BUILD_DIR"
 
 # Run cmake configure and generate build system
-cmake -B "$BUILD_DIR" -S . -DCMAKE_TOOLCHAIN_FILE="$TOOLCHAIN_FILE"
+cmake -B "$BUILD_DIR" -S . \
+-DCMAKE_TOOLCHAIN_FILE="$TOOLCHAIN_FILE" \
+-DVCPKG_TARGET_TRIPLET=x64-linux
+
 
 # Build
 cmake --build "$BUILD_DIR"
