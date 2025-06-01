@@ -16,7 +16,7 @@ src/WebSocketClient.cpp
 
 target_include_directories(absolute_agony PRIVATE ${CMAKE_SOURCE_DIR}/packages
                                                   ${CMAKE_SOURCE_DIR}/packages/websocketpp
-						  ${CMAKE_SOURCE_DIR}/include
+						                         ${CMAKE_SOURCE_DIR}/include
                                                   ${CMAKE_SOURCE_DIR}/lib
 )
 
