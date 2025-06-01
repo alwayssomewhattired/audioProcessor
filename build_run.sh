@@ -5,6 +5,7 @@ TOOLCHAIN_FILE="$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake"
 
 BUILD_DIR="./build"
 
+
 # Create build directory if missing
 mkdir -p "$BUILD_DIR"
 
@@ -16,3 +17,8 @@ cmake -B "$BUILD_DIR" -S . \
 
 # Build
 cmake --build "$BUILD_DIR"
+
+cd ./build
+export MY_WEBSOCKET_URI="wss://0wl8ctuh90.execute-api.us-east-2.amazonaws.com/production/"
+./absolute_agony
+
