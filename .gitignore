@@ -7,7 +7,7 @@
 *.0
 *.exe
 bin/
-lib/
+
 build/
 *.d
 launch.vs.json
