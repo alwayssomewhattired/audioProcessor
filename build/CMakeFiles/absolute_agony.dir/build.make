@@ -192,6 +192,7 @@ absolute_agony: /vcpkg/installed/x64-linux/debug/lib/libogg.a
 absolute_agony: /vcpkg/installed/x64-linux/debug/lib/libopus.a
 absolute_agony: /vcpkg/installed/x64-linux/debug/lib/libmpg123.a
 absolute_agony: /vcpkg/installed/x64-linux/lib/libmp3lame.a
+absolute_agony: /vcpkg/installed/x64-linux/debug/lib/libjsoncpp.a
 absolute_agony: CMakeFiles/absolute_agony.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/ec2-user/audioProcessor/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable absolute_agony"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/absolute_agony.dir/link.txt --verbose=$(VERBOSE)
