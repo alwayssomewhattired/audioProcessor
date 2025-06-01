@@ -1,0 +1,3 @@
+/home/ec2-user/audioProcessor/build/CMakeFiles/absolute_agony.dir
+/home/ec2-user/audioProcessor/build/CMakeFiles/edit_cache.dir
+/home/ec2-user/audioProcessor/build/CMakeFiles/rebuild_cache.dir
