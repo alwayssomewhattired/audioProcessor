@@ -3,7 +3,7 @@
 VCPKG_ROOT="/vcpkg"
 TOOLCHAIN_FILE="$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake"
 
-BUILD_DIR="build"
+BUILD_DIR="./build"
 
 # Create build directory if missing
 mkdir -p "$BUILD_DIR"
