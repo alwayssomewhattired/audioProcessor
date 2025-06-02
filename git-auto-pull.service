@@ -1,0 +1,14 @@
+[Unit]
+Description=Auto Git Pull Service
+After=network.target
+
+[Service]
+ExecStart=/home/ec2-user/audioProcessor/build_run.sh
+User=ec2-user
+WorkingDirectory=/home/ec2-user/audioProcessor/build
+StandardOutput=append:/var/log/git-auto-pull.log
+StandardError=append:/var/log/git-auto-pull.log
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
