@@ -83,7 +83,7 @@ int main()
 
 	std::cout << "Current working dir: " << std::filesystem::current_path() << std::endl;
 
-	dotenv::init();  // Load .env file
+	dotenv::init("../../../src/.env");  // Load .env file
 
 	const char* raw_uri = std::getenv("MY_WEBSOCKET_URI");
 	std::string uri = raw_uri ? std::string(raw_uri) : dotenv::getenv("MY_WEBSOCKET_URI");
