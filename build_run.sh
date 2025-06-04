@@ -9,7 +9,6 @@ BRANCH="master"
 APP_BINARY="$BUILD_DIR/absolute_agony"
 PID_FILE="$BUILD_DIR/absolute_agony.pid"
 
-while true; do
 	cd "$(dirname "$0")" || exit 1
 
 	git fetch "$REMOTE" "$BRANCH"
@@ -64,7 +63,3 @@ while true; do
 		export MY_WEBSOCKET_URI="wss://0wl8ctuh90.execute-api.us-east-2.amazonaws.com/production/"
 		./absolute_agony
 	fi
-
-	sleep 60
-done
-
