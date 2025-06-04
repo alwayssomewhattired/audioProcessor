@@ -54,9 +54,17 @@ while true; do
 		else
 			echo "[$(date)] Git pull failed. Skipping build/run."
 		fi
+		echo "All up to date! Now running"
+		cd ./build
+		export MY_WEBSOCKET_URI="wss://0wl8ctuh90.execute-api.us-east-2.amazonaws.com/production/"
+		./absolute_agony
 	else
-		echo "All up to date! Nothing to do."
+		echo "All up to date! Now running"
+		cd ./build
+		export MY_WEBSOCKET_URI="wss://0wl8ctuh90.execute-api.us-east-2.amazonaws.com/production/"
+		./absolute_agony
 	fi
 
 	sleep 60
 done
+
