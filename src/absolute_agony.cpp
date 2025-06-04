@@ -69,7 +69,7 @@ struct Config {
 	int sampleRate;
 	int channels;
 	int productDurationSamples;
-
+	double controlNote;
 };
 
 
@@ -146,6 +146,7 @@ int main()
 
 
 		fftProcessor.compute(parser.getAudioData(), ws.get_control_note(), false);
+
 
 		const auto& chunks = fftProcessor.getMagnitudes();
 		const std::vector<double>& audio_copy = parser.getAudioData();

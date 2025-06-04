@@ -6,7 +6,7 @@
 #include <boost/asio/ssl/context.hpp>
 
 WebSocketClient::WebSocketClient()
-    : connected(false), task_done(false), targetFrequency(200),
+    : connected(false), task_done(false), controlNote(200),
     c(), hdl_global(), mtx(), cv(), condition_met(false)
 {
     c.init_asio();
@@ -115,7 +115,7 @@ void WebSocketClient::on_message(connection_hdl, client::message_ptr msg) {
             std::string noteControl = root.get("note", "").asString();
             double noteNum = std::stoi(noteControl);
             std::cout << "note: " << noteNum << std::endl;
-            targetFrequency = noteNum;
+            controlNote = noteNum;
         }
     }
     else {
