@@ -1,5 +1,9 @@
 #!/bin/bash
 
+exec > >(logger -t build_run.sh) 2>&1
+
+set -x
+
 VCPKG_ROOT="/vcpkg"
 TOOLCHAIN_FILE="$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake"
 BUILD_DIR="./build"
