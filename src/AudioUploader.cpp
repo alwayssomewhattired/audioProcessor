@@ -58,8 +58,10 @@ bool AudioUploader::uploadIfReady(const std::vector<double>& samples, size_t sam
 	if (outcome.IsSuccess()) {
 		std::cout << "Product successfully uploaded to S3!" << std::endl;
 		AudioIdMessage(ws, productKey);
+		std::cout << "after AudioIdMessage" << std::endl;
 		std::this_thread::sleep_for(std::chrono::milliseconds(2000));  // sleep 2000 ms
 		notifyWebSocket(ws);
+		std::cout << "After notifyWebSocket" << std::endl;
 		input_data.reset();
 		return true;
 	}
@@ -92,6 +94,7 @@ bool AudioUploader::writeWavFile(const std::vector<double>& samples, const std::
 }
 
 void AudioUploader::AudioIdMessage(WebSocketClient& ws, std::string sampledinfiniteId) {
+	std::cout << "Inside AudioIdMessage" << std::endl;
 	Json::Value message;
 	message["action"] = "sendMessage";
 	message["body"] = "sampledinfinite";
@@ -105,6 +108,7 @@ void AudioUploader::AudioIdMessage(WebSocketClient& ws, std::string sampledinfin
 }
 
 void AudioUploader::notifyWebSocket(WebSocketClient& ws) {
+	std::cout << "inside notifyWebSocket" << std::endl;
 	Json::Value message;
 	message["action"] = "sendMessage";
 	message["body"] = "finish_now";
