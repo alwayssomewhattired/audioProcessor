@@ -10,6 +10,9 @@
 #include "WebSocketClient.h"
 #include "utils.h"
 
+#include <thread>
+#include <chrono>
+
 AudioUploader::AudioUploader(const std::string& bucket, const std::string& region)
 : bucketName(bucket) {
 	options = Aws::SDKOptions{};
@@ -55,6 +58,7 @@ bool AudioUploader::uploadIfReady(const std::vector<double>& samples, size_t sam
 	if (outcome.IsSuccess()) {
 		std::cout << "Product successfully uploaded to S3!" << std::endl;
 		AudioIdMessage(ws, productKey);
+		std::this_thread::sleep_for(std::chrono::milliseconds(2000));  // sleep 2000 ms
 		notifyWebSocket(ws);
 		input_data.reset();
 		return true;
