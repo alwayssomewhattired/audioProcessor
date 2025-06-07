@@ -26,6 +26,6 @@ private:
 	std::string region;
 
 	bool writeWavFile(const std::vector<double>& samples, const std::string& filename);
-
+	void AudioIdMessage(WebSocketClient& ws, const std::string sampledinfiniteId);
 	void notifyWebSocket(WebSocketClient& ws);
 };
