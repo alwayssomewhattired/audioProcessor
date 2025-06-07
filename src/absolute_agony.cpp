@@ -148,8 +148,17 @@ int main()
 		if (fftProcessor.getSampleStorage().size() >= config.productDurationSamples) {
 
 			AudioUploader uploader(config.bucketName, config.region);
-			uploader.uploadIfReady(fftProcessor.getSampleStorage(), config.productDurationSamples, outputName, ws);
+			// TO DO
+			// 0.5. COMMIT SUCKAH!
+			// 1. SEND UUID FROM HERE TO WS SERVER 
+			// 2. SENDMESSAGE HANDLER FUNCTION FOR UUID TO FRONTEND WEBSOCKET SERVER
+			// 3. FRONTEND WEBSOCKET SERVER HANDLER FUNCTION FOR UUID TO FRONTEND SERVER
 
+			// maybe
+				// ATTATCH CONNECTION ID TO AUDIO CONTROLS BEFORE SENT TO HERE. ONCE HERE, SAVE THE CONNECTION ID TO BE ATTATCHED TO 
+				// SAMPLEDINFINITID MESSAGE AS UPLOADIFREADY ARGUMENTS
+
+			uploader.uploadIfReady(fftProcessor.getSampleStorage(), config.productDurationSamples, outputName, ws);
 		}
 
 		ws.reset_condition();
