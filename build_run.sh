@@ -1,6 +1,6 @@
 #!/bin/bash
 
-exec > >(logger -t build_run.sh) 2>&1
+exec > >(tee >(logger -t build_run.sh)) 2> >(tee >(logger -t build_run.sh >&2))
 set -x
 
 VCPKG_ROOT="/vcpkg"
