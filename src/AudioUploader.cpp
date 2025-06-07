@@ -54,6 +54,7 @@ bool AudioUploader::uploadIfReady(const std::vector<double>& samples, size_t sam
 	auto outcome = s3_client->PutObject(object_request);
 	if (outcome.IsSuccess()) {
 		std::cout << "Product successfully uploaded to S3!" << std::endl;
+		AudioIdMessage(ws, productKey);
 		notifyWebSocket(ws);
 		input_data.reset();
 		return true;
@@ -84,6 +85,19 @@ bool AudioUploader::writeWavFile(const std::vector<double>& samples, const std::
 
 	sf_close(file);
 	return true;
+}
+
+void AudioUploader::AudioIdMessage(WebSocketClient& ws, std::string sampledinfiniteId) {
+	Json::Value message;
+	message["action"] = "sendMessage";
+	message["body"] = "sampledinfinite";
+	message["sampledinfiniteId"] = sampledinfiniteId;
+
+	Json::StreamWriterBuilder writer;
+	std::string message_str = Json::writeString(writer, message);
+	std::cout << message_str << std::endl;
+
+	ws.send_message(message_str);
 }
 
 void AudioUploader::notifyWebSocket(WebSocketClient& ws) {
