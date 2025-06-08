@@ -160,7 +160,7 @@ int main()
 
 			uploader.uploadIfReady(fftProcessor.getSampleStorage(), config.productDurationSamples, outputName, ws);
 		}
-
+		ws.stop();
 		ws.reset_condition();
 
 	}
