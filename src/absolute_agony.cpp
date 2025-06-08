@@ -147,6 +147,7 @@ int main()
 
 		if (fftProcessor.getSampleStorage().size() >= config.productDurationSamples) {
 
+
 			AudioUploader uploader(config.bucketName, config.region);
 			// TO DO
 			// 0.5. COMMIT SUCKAH!
