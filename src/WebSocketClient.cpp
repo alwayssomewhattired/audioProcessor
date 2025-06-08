@@ -110,12 +110,6 @@ void WebSocketClient::on_message(connection_hdl, client::message_ptr msg) {
             }
             cv.notify_one();
         }
-        else if (received_message == "user_id") {
-            std::cout << "user_id has been received" << std::endl;
-            std::string user_id = root.get("user_id", "").asString();
-            std::cout << "userID: " << user_id << std::endl;
-            setenv("USER_ID", user_id.c_str(), 1);
-        }
         else if (received_message == "poverty_stricken") {
             std::cout << "Controls have been received" << std::endl;
             std::string noteControl = root.get("note", "").asString();
