@@ -33,6 +33,8 @@ bool WebSocketClient::connect(const std::string& uri) {
 
     c.connect(con);
 
+    std::cout << "OMG I CONNECT!" << std::endl;
+
     websocket_thread = std::thread([this]() { c.run(); });
 
     return true;
