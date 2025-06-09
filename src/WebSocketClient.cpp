@@ -33,7 +33,6 @@ bool WebSocketClient::connect(const std::string& uri) {
 
     c.connect(con);
 
-    std::cout << "OMG I CONNECT!" << std::endl;
 
     websocket_thread = std::thread([this]() { c.run(); });
 
@@ -74,6 +73,7 @@ bool WebSocketClient::send_message(const std::string& message) {
 void WebSocketClient::stop() {
     task_done = true;
     c.stop();
+    std::cout << "WebSocket stopped" << std::endl;
     if (websocket_thread.joinable()) {
         websocket_thread.join();
     }
