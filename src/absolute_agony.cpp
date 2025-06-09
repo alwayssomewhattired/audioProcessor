@@ -161,10 +161,10 @@ int main()
 
 			uploader.uploadIfReady(fftProcessor.getSampleStorage(), config.productDurationSamples, outputName, ws);
 		}
-		ws.stop();
 		ws.reset_condition();
 
 	}
 
+		ws.stop();
 	std::cout << "FINISHED" << std::endl;
 }
