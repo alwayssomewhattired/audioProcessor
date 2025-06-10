@@ -96,13 +96,6 @@ int main()
 		return 1;
 	}
 
-	const char* user_id = std::getenv("MY_USER_ID");
-	if (user_id != nullptr) {
-		std::cout << "MY_USER_ID: " << user_id << std::endl;
-	}
-	else {
-		std::cerr << "MY_USER_ID not set." << std::endl;
-	}
 
 	WebSocketClient ws;
 	ws.connect(uri);
@@ -115,6 +108,14 @@ int main()
 
 
 	while (fftProcessor.getSampleStorage().size() < config.productDurationSamples) {
+
+		const char* user_id = std::getenv("MY_USER_ID");
+		if (user_id != nullptr) {
+			std::cout << "MY_USER_ID: " << user_id << std::endl;
+		}
+		else {
+			std::cerr << "MY_USER_ID not set." << std::endl;
+		}
 
 		// Create a JSON message
 		Json::Value message;
