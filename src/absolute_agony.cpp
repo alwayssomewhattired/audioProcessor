@@ -117,6 +117,14 @@ int main()
 			std::cerr << "MY_USER_ID not set." << std::endl;
 		}
 
+		const char* control_note = std::getenv("MY_CONTROL_NOTE");
+		if (control_note != nullptr) {
+			std::cout << "MY_CONTROL_NOTE: " << control_note;
+		}
+		else {
+			std::cerr << "MY_CONTROL_NOTE not set." << std::endl;
+		}
+
 		// Create a JSON message
 		Json::Value message;
 		message["action"] = "sendMessage";
