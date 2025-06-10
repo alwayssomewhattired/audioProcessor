@@ -33,14 +33,6 @@ bool AudioUploader::uploadIfReady(const std::vector<double>& samples, size_t sam
 	if (!writeWavFile(samples, outputName))
 		return false;
 
-	const char* user_id = getenv("USER_ID");
-	if (user_id != nullptr) {
-		std::cout << "USER_ID is: " << user_id << std::endl;
-	}
-	else {
-		std::cout << "USER_ID not set." << std::endl;
-	}
-
 	auto input_data = Aws::MakeShared<Aws::FStream>("AllocTag", outputName, std::ios_base::in | std::ios_base::binary);
 	if (!input_data->good()) {
 		std::cerr << "Error: Could not open " << outputName << " for S3 upload" << std::endl;
