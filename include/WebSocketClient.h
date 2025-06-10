@@ -54,7 +54,7 @@ private:
 	std::condition_variable cv;
 	bool condition_met;
 
-	double targetFrequency;
+	//double targetFrequency;
 
 	std::thread websocket_thread;
 };
