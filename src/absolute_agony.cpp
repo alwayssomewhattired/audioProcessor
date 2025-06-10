@@ -106,9 +106,6 @@ int main()
 
 	FFTProcessor fftProcessor(config.chunkSize, config.sampleRate);
 
-
-	while (fftProcessor.getSampleStorage().size() < config.productDurationSamples) {
-
 		const char* user_id = std::getenv("MY_USER_ID");
 		if (user_id != nullptr) {
 			std::cout << "MY_USER_ID: " << user_id << std::endl;
@@ -117,13 +114,19 @@ int main()
 			std::cerr << "MY_USER_ID not set." << std::endl;
 		}
 
+		double my_control_note = 0.0;
 		const char* control_note = std::getenv("MY_CONTROL_NOTE");
 		if (control_note != nullptr) {
 			std::cout << "MY_CONTROL_NOTE: " << control_note;
+			my_control_note = std::atof(control_note);
 		}
 		else {
 			std::cerr << "MY_CONTROL_NOTE not set." << std::endl;
 		}
+
+
+	while (fftProcessor.getSampleStorage().size() < config.productDurationSamples) {
+
 
 		// Create a JSON message
 		Json::Value message;
@@ -139,7 +142,7 @@ int main()
 		ws.wait_for_condition(); // Wait until 'source_upload' message is received
 
 		std::cout << "WE GOOD BABY" << std::endl;
-		std::cout << "note: " << ws.get_control_note() << std::endl;
+		//std::cout << "note: " << ws.get_control_note() << std::endl;
 
 
 		AudioFileParse parser;
@@ -153,7 +156,8 @@ int main()
 		parser.applyHanningWindow();
 
 
-		fftProcessor.compute(parser.getAudioData(), ws.get_control_note(), false);
+		//fftProcessor.compute(parser.getAudioData(), ws.get_control_note(), false);
+		fftProcessor.compute(parser.getAudioData(), my_control_note, false);
 
 		const auto& chunks = fftProcessor.getMagnitudes();
 		const std::vector<double>& audio_copy = parser.getAudioData();
@@ -161,7 +165,6 @@ int main()
 		std::cout << "sampleStorage: " << fftProcessor.getSampleStorage().size() << std::endl;
 
 		if (fftProcessor.getSampleStorage().size() >= config.productDurationSamples) {
-
 
 			AudioUploader uploader(config.bucketName, config.region);
 			// TO DO
