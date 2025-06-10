@@ -33,9 +33,9 @@ public:
 	void wait_for_condition();
 	void reset_condition();
 	bool send_message(const std::string& message);
-	int get_control_note() const {
-		return targetFrequency;
-	}
+	//int get_control_note() const {
+	//	return targetFrequency;
+	//}
 	void stop();
 
 private:
