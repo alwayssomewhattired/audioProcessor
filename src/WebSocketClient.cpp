@@ -6,8 +6,7 @@
 #include <boost/asio/ssl/context.hpp>
 
 WebSocketClient::WebSocketClient()
-    : connected(false), task_done(false), /*targetFrequency(0),*/
-    c(), hdl_global(), mtx(), cv(), condition_met(false)
+    : connected(false), task_done(false), c(), hdl_global(), mtx(), cv(), condition_met(false)
 {
     c.init_asio();
     c.set_tls_init_handler([this](connection_hdl hdl) { return on_tls_init(hdl); });
@@ -112,13 +111,6 @@ void WebSocketClient::on_message(connection_hdl, client::message_ptr msg) {
             }
             cv.notify_one();
         }
-        //else if (received_message == "poverty_stricken") {
-        //    std::cout << "Controls have been received" << std::endl;
-        //    std::string noteControl = root.get("note", "").asString();
-        //    double noteNum = std::stoi(noteControl);
-        //    std::cout << "note: " << noteNum << std::endl;
-        //    targetFrequency = noteNum;
-        //}
     }
     else {
         std::cerr << "Failed to parse JSON: " << errs << std::endl;
