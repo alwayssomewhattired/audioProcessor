@@ -58,6 +58,7 @@ bool AudioUploader::uploadIfReady(const std::vector<double>& samples, size_t sam
 	auto outcome = s3_client->PutObject(object_request);
 	if (outcome.IsSuccess()) {
 		std::cout << "Product successfully uploaded to S3!" << std::endl;
+		std::cout << "in uploadifready: " << userId << std::endl;
 		AudioIdMessage(ws, productKey, userId);
 		std::cout << "after AudioIdMessage" << std::endl;
 		std::this_thread::sleep_for(std::chrono::milliseconds(2000));  // sleep 2000 ms
@@ -101,6 +102,8 @@ void AudioUploader::AudioIdMessage(WebSocketClient& ws, std::string sampledinfin
 	message["body"] = "sampledinfinite";
 	message["sampledinfiniteId"] = sampledinfiniteId;
 	message["userId"] = userId;
+	std::cout << "in audioidmessage: " << userId << std::endl;
+	std::cout << "in uploadifready(message): " << message["userId"] << std::endl;
 
 	Json::StreamWriterBuilder writer;
 	std::string message_str = Json::writeString(writer, message);
