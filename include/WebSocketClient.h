@@ -33,9 +33,6 @@ public:
 	void wait_for_condition();
 	void reset_condition();
 	bool send_message(const std::string& message);
-	//int get_control_note() const {
-	//	return targetFrequency;
-	//}
 	void stop();
 
 private:
@@ -53,8 +50,6 @@ private:
 	std::mutex mtx;
 	std::condition_variable cv;
 	bool condition_met;
-
-	//double targetFrequency;
 
 	std::thread websocket_thread;
 };

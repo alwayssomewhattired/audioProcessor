@@ -145,8 +145,6 @@ int main()
 		ws.wait_for_condition(); // Wait until 'source_upload' message is received
 
 		std::cout << "WE GOOD BABY" << std::endl;
-		//std::cout << "note: " << ws.get_control_note() << std::endl;
-
 
 		AudioFileParse parser;
 		parser.downloadAudioFileFromS3(config.bucketName, config.objectKey);
@@ -159,7 +157,6 @@ int main()
 		parser.applyHanningWindow();
 
 
-		//fftProcessor.compute(parser.getAudioData(), ws.get_control_note(), false);
 		fftProcessor.compute(parser.getAudioData(), my_control_note, false);
 
 		const auto& chunks = fftProcessor.getMagnitudes();
@@ -170,15 +167,6 @@ int main()
 		if (fftProcessor.getSampleStorage().size() >= config.productDurationSamples) {
 
 			AudioUploader uploader(config.bucketName, config.region);
-			// TO DO
-			// 0.5. COMMIT SUCKAH!
-			// 1. SEND UUID FROM HERE TO WS SERVER 
-			// 2. SENDMESSAGE HANDLER FUNCTION FOR UUID TO FRONTEND WEBSOCKET SERVER
-			// 3. FRONTEND WEBSOCKET SERVER HANDLER FUNCTION FOR UUID TO FRONTEND SERVER
-
-			// maybe
-				// ATTATCH CONNECTION ID TO AUDIO CONTROLS BEFORE SENT TO HERE. ONCE HERE, SAVE THE CONNECTION ID TO BE ATTATCHED TO 
-				// SAMPLEDINFINITID MESSAGE AS UPLOADIFREADY ARGUMENTS
 
 			uploader.uploadIfReady(fftProcessor.getSampleStorage(), config.productDurationSamples, outputName, ws, my_user_id);
 		}
