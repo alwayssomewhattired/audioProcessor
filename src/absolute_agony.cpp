@@ -111,6 +111,8 @@ int main()
 	if (user_id != nullptr) {
 		std::cout << "MY_USER_ID: " << user_id << std::endl;
 		my_user_id = std::string(my_user_id);
+		std::cout << "my_user_id: " << my_user_id << std::endl;
+
 	}
 	else {
 		std::cerr << "MY_USER_ID not set." << std::endl;
