@@ -15,7 +15,8 @@ public:
 	AudioUploader(const std::string& bucket, const std::string& region);
 	~AudioUploader();
 
-	bool uploadIfReady(const std::vector<double>& samples, size_t sampleThreshold, const std::string& outputName, WebSocketClient& ws);
+	bool uploadIfReady(const std::vector<double>& samples, size_t sampleThreshold,
+		const std::string& outputName, WebSocketClient& ws, const std::string userId);
 
 
 private:
@@ -26,6 +27,6 @@ private:
 	std::string region;
 
 	bool writeWavFile(const std::vector<double>& samples, const std::string& filename);
-	void AudioIdMessage(WebSocketClient& ws, const std::string sampledinfiniteId);
+	void AudioIdMessage(WebSocketClient& ws, const std::string sampledinfiniteId, const std::string userId);
 	void notifyWebSocket(WebSocketClient& ws);
 };

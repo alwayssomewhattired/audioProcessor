@@ -106,23 +106,25 @@ int main()
 
 	FFTProcessor fftProcessor(config.chunkSize, config.sampleRate);
 
-		const char* user_id = std::getenv("MY_USER_ID");
-		if (user_id != nullptr) {
-			std::cout << "MY_USER_ID: " << user_id << std::endl;
-		}
-		else {
-			std::cerr << "MY_USER_ID not set." << std::endl;
-		}
+	std::string my_user_id = "";
+	const char* user_id = std::getenv("MY_USER_ID");
+	if (user_id != nullptr) {
+		std::cout << "MY_USER_ID: " << user_id << std::endl;
+		my_user_id = std::string(my_user_id);
+	}
+	else {
+		std::cerr << "MY_USER_ID not set." << std::endl;
+	}
 
-		double my_control_note = 0.0;
-		const char* control_note = std::getenv("MY_CONTROL_NOTE");
-		if (control_note != nullptr) {
-			std::cout << "MY_CONTROL_NOTE: " << control_note;
-			my_control_note = std::atof(control_note);
-		}
-		else {
-			std::cerr << "MY_CONTROL_NOTE not set." << std::endl;
-		}
+	double my_control_note = 0.0;
+	const char* control_note = std::getenv("MY_CONTROL_NOTE");
+	if (control_note != nullptr) {
+		std::cout << "MY_CONTROL_NOTE: " << control_note;
+		my_control_note = std::atof(control_note);
+	}
+	else {
+		std::cerr << "MY_CONTROL_NOTE not set." << std::endl;
+	}
 
 
 	while (fftProcessor.getSampleStorage().size() < config.productDurationSamples) {
@@ -177,7 +179,7 @@ int main()
 				// ATTATCH CONNECTION ID TO AUDIO CONTROLS BEFORE SENT TO HERE. ONCE HERE, SAVE THE CONNECTION ID TO BE ATTATCHED TO 
 				// SAMPLEDINFINITID MESSAGE AS UPLOADIFREADY ARGUMENTS
 
-			uploader.uploadIfReady(fftProcessor.getSampleStorage(), config.productDurationSamples, outputName, ws);
+			uploader.uploadIfReady(fftProcessor.getSampleStorage(), config.productDurationSamples, outputName, ws, my_user_id);
 		}
 		ws.reset_condition();
 
