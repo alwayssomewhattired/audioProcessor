@@ -28,6 +28,7 @@ public:
 	WebSocketClient();
 	~WebSocketClient();
 
+	const std::string& get_audio_source_name() const;
 	bool connect(const std::string& uri);
 	void wait_for_connection();
 	void wait_for_condition();
@@ -52,4 +53,5 @@ private:
 	bool condition_met;
 
 	std::thread websocket_thread;
+	std::string audio_source_name;
 };
