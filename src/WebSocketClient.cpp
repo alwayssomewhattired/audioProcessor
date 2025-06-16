@@ -93,6 +93,10 @@ std::shared_ptr<boost::asio::ssl::context> WebSocketClient::on_tls_init(connecti
     return ctx;
 }
 
+const std::string& WebSocketClient::get_audio_source_name() const {
+    return audio_source_name;
+}
+
 void WebSocketClient::on_message(connection_hdl, client::message_ptr msg) {
     Json::Value root;
     Json::CharReaderBuilder reader;
@@ -105,6 +109,8 @@ void WebSocketClient::on_message(connection_hdl, client::message_ptr msg) {
 
         if (received_message == "source_upload") {
             std::cout << "Source has been uploaded!" << std::endl;
+            audio_source_name = root.get("audio_source_name", "").asString();
+            std::cout << "Source name: " << audio_source_name << std::endl;
             {
                 std::lock_guard<std::mutex> lock(mtx);
                 condition_met = true;
@@ -120,6 +126,15 @@ void WebSocketClient::on_message(connection_hdl, client::message_ptr msg) {
 void WebSocketClient::on_open(connection_hdl hdl) {
     std::cout << "Connected to server!" << std::endl;
     hdl_global = hdl;
+
+    Json::Value message;
+    message["action"] = "sendMessage";
+    message['body'] = "user_id";
+
+    Json::StreamWriterBuilder writer;
+    std::string message_str = Json::writeString(writer, message);
+    std::cout << "Sending to API: " << message_str << std::endl;
+    send_message(message_str);
     connected = true;
 }
 
