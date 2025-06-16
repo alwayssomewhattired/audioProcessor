@@ -75,7 +75,7 @@ int main()
 
 
 	std::cout <<
-		"-------------------------------------------------WELCOME--TO--MY--SOFTWARE-------------------------------------------------"
+"---------------------------------------------------WELCOME--TO--MY--SOFTWARE---------------------------------------------------"
 		<< std::endl;
 
 
@@ -96,13 +96,13 @@ int main()
 		return 1;
 	}
 
+	const char* outputName = "output.wav";
 
 	WebSocketClient ws;
 	ws.connect(uri);
-
-	const char* outputName = "output.wav";
-
 	ws.wait_for_connection();
+
+
 
 	FFTProcessor fftProcessor(config.chunkSize, config.sampleRate);
 
@@ -139,15 +139,16 @@ int main()
 		// Convert the JSON object to a string
 		Json::StreamWriterBuilder writer;
 		std::string message_str = Json::writeString(writer, message);
-		std::cout << message_str << std::endl;
+		std::cout << "Sending to API: " << message_str << std::endl;
 		ws.send_message(message_str);
 
 		ws.wait_for_condition(); // Wait until 'source_upload' message is received
 
 		std::cout << "WE GOOD BABY" << std::endl;
 
+
 		AudioFileParse parser;
-		parser.downloadAudioFileFromS3(config.bucketName, config.objectKey);
+		parser.downloadAudioFileFromS3(config.bucketName, ws.get_audio_source_name());
 		parser.readAudioFileAsMono("temp_audio.mp3");
 		int n = parser.size();
 		std::cout << "Fetched audio size: " << n << std::endl;
