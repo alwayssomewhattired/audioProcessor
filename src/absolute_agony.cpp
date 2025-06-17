@@ -102,6 +102,15 @@ int main()
 	ws.connect(uri);
 	ws.wait_for_connection();
 
+	Json::Value message;
+	message["action"] = "sendMessage";
+	message["body"] = "user_id";
+
+	Json::StreamWriterBuilder writer;
+	std::string message_str = Json::writeString(writer, message);
+	std::cout << "Sending to API: " << message_str << std::endl;
+	ws.send_message(message_str);
+
 
 
 	FFTProcessor fftProcessor(config.chunkSize, config.sampleRate);
