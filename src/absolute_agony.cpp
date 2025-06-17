@@ -102,18 +102,6 @@ int main()
 	ws.connect(uri);
 	ws.wait_for_connection();
 
-	Json::Value message;
-	message["action"] = "sendMessage";
-	message["body"] = "user_id";
-
-	Json::StreamWriterBuilder writer;
-	std::string message_str = Json::writeString(writer, message);
-	std::cout << "Sending to API: " << message_str << std::endl;
-	ws.send_message(message_str);
-
-
-
-	FFTProcessor fftProcessor(config.chunkSize, config.sampleRate);
 
 	std::string my_user_id = "";
 	const char* user_id = std::getenv("MY_USER_ID");
@@ -125,6 +113,18 @@ int main()
 	else {
 		std::cerr << "MY_USER_ID not set." << std::endl;
 	}
+
+	Json::Value message;
+	message["action"] = "sendMessage";
+	message["body"] = "user_id";
+
+	Json::StreamWriterBuilder writer;
+	std::string message_str = Json::writeString(writer, message);
+	std::cout << "Sending to API: " << message_str << std::endl;
+	ws.send_message(message_str);
+
+	FFTProcessor fftProcessor(config.chunkSize, config.sampleRate);
+
 
 	double my_control_note = 0.0;
 	const char* control_note = std::getenv("MY_CONTROL_NOTE");
