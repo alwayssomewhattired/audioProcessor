@@ -126,15 +126,6 @@ void WebSocketClient::on_message(connection_hdl, client::message_ptr msg) {
 void WebSocketClient::on_open(connection_hdl hdl) {
     std::cout << "Connected to server!" << std::endl;
     hdl_global = hdl;
-
-    Json::Value message;
-    message["action"] = "sendMessage";
-    message["body"] = "user_id";
-
-    Json::StreamWriterBuilder writer;
-    std::string message_str = Json::writeString(writer, message);
-    std::cout << "Sending to API: " << message_str << std::endl;
-    send_message(message_str);
     connected = true;
 }
 
