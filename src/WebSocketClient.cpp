@@ -129,7 +129,7 @@ void WebSocketClient::on_open(connection_hdl hdl) {
 
     Json::Value message;
     message["action"] = "sendMessage";
-    message['body'] = "user_id";
+    message["body"] = "user_id";
 
     Json::StreamWriterBuilder writer;
     std::string message_str = Json::writeString(writer, message);
