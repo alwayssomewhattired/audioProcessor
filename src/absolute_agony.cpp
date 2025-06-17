@@ -144,6 +144,7 @@ int main()
 		Json::Value message;
 		message["action"] = "sendMessage";
 		message["body"] = "run_function";
+		message["user_id"] = my_user_id;
 
 		// Convert the JSON object to a string
 		Json::StreamWriterBuilder writer;
