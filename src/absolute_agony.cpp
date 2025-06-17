@@ -140,7 +140,7 @@ int main()
 	while (fftProcessor.getSampleStorage().size() < config.productDurationSamples) {
 
 
-		// Create a JSON message
+		// Create a JSON message.
 		Json::Value message;
 		message["action"] = "sendMessage";
 		message["body"] = "run_function";
