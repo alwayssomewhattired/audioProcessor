@@ -117,6 +117,7 @@ int main()
 	Json::Value message;
 	message["action"] = "sendMessage";
 	message["body"] = "user_id";
+	message["user_id"] = my_user_id;
 
 	Json::StreamWriterBuilder writer;
 	std::string message_str = Json::writeString(writer, message);
@@ -144,7 +145,6 @@ int main()
 		Json::Value message;
 		message["action"] = "sendMessage";
 		message["body"] = "run_function";
-		message["user_id"] = my_user_id;
 
 		// Convert the JSON object to a string
 		Json::StreamWriterBuilder writer;
