@@ -12,6 +12,7 @@ CMakeSettings.json
 launch.vs.json
 git-auto-pull.service
 build
+build_run.sh
 
 
 # User-specific files
