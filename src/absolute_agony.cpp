@@ -102,6 +102,10 @@ int main()
 	ws.connect(uri);
 	ws.wait_for_connection();
 
+	const char* control_source = std::getenv("MY_CONTROL_SOURCE");
+	if (control_source == nullptr) {
+		std::cerr << "MY_CONTROL_SOURCE not set." << std::endl;
+	}
 
 	std::string my_user_id = "";
 	const char* user_id = std::getenv("MY_USER_ID");
@@ -137,6 +141,14 @@ int main()
 		std::cerr << "MY_CONTROL_NOTE not set." << std::endl;
 	}
 
+	if (control_source == "user_upload") {
+		// PUT LOGIC HERE .....
+		std::cout << "user_upload path taken!" << std::endl;
+		ws.reset_condition();
+		ws.stop();
+		std::cout << "FINISHED" << std::endl;
+		return 0;
+	}
 
 	while (fftProcessor.getSampleStorage().size() < config.productDurationSamples) {
 
