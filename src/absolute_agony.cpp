@@ -101,12 +101,15 @@ int main()
 	WebSocketClient ws;
 	ws.connect(uri);
 	ws.wait_for_connection();
-
+	
+	std::string my_control_source = "";
 	const char* control_source = std::getenv("MY_CONTROL_SOURCE");
 	if (control_source == nullptr) {
 		std::cerr << "MY_CONTROL_SOURCE not set." << std::endl;
+		return 0;
 	}
 	std::cout << "CONTROL_SOURCE = " << control_source << std::endl;
+	my_control_source = std::string(control_source)
 
 	std::string my_user_id = "";
 	const char* user_id = std::getenv("MY_USER_ID");
@@ -142,9 +145,9 @@ int main()
 		std::cerr << "MY_CONTROL_NOTE not set." << std::endl;
 	}
 
-	if (control_source == "user_source") {
+	if (my_control_source == "user_source") {
 		// PUT LOGIC HERE .....
-		std::cout << "user_upload path taken!" << std::endl;
+		std::cout << "user_source path taken!" << std::endl;
 		ws.reset_condition();
 		ws.stop();
 		std::cout << "FINISHED" << std::endl;

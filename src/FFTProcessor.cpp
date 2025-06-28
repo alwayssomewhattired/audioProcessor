@@ -81,7 +81,6 @@ void FFTProcessor::storeChunkIfProminent(const std::vector<double>& samples, int
 	for (int i = start; i < end; ++i) {
 		double val = clamp(samples[i], -1.0, 1.0);
 		m_sampleStorage.push_back(val);
-
 	}
 }
 
