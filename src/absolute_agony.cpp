@@ -109,7 +109,7 @@ int main()
 		return 0;
 	}
 	std::cout << "CONTROL_SOURCE = " << control_source << std::endl;
-	my_control_source = std::string(control_source)
+	my_control_source = std::string(control_source);
 
 	std::string my_user_id = "";
 	const char* user_id = std::getenv("MY_USER_ID");
