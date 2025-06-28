@@ -106,6 +106,7 @@ int main()
 	if (control_source == nullptr) {
 		std::cerr << "MY_CONTROL_SOURCE not set." << std::endl;
 	}
+	std::cout << "CONTROL_SOURCE = " << control_source << std::endl;
 
 	std::string my_user_id = "";
 	const char* user_id = std::getenv("MY_USER_ID");
