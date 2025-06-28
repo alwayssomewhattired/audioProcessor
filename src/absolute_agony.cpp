@@ -138,7 +138,7 @@ int main()
 	double my_control_note = 0.0;
 	const char* control_note = std::getenv("MY_CONTROL_NOTE");
 	if (control_note != nullptr) {
-		std::cout << "MY_CONTROL_NOTE: " << control_note;
+		std::cout << "MY_CONTROL_NOTE: " << control_note << std::endl;
 		my_control_note = std::atof(control_note);
 	}
 	else {
@@ -150,6 +150,7 @@ int main()
 		std::cout << "user_source path taken!" << std::endl;
 		ws.reset_condition();
 		ws.stop();
+		std::cout << "BOOOOM!" << std::endl;
 		std::cout << "FINISHED" << std::endl;
 		return 0;
 	}
