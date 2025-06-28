@@ -142,7 +142,7 @@ int main()
 		std::cerr << "MY_CONTROL_NOTE not set." << std::endl;
 	}
 
-	if (control_source == "user_upload") {
+	if (control_source == "user_source") {
 		// PUT LOGIC HERE .....
 		std::cout << "user_upload path taken!" << std::endl;
 		ws.reset_condition();
