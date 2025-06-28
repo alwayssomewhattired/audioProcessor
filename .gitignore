@@ -382,3 +382,4 @@ FodyWeavers.xsd
 /absolute_agony/output.wav
 /absolute_agony/sampleStorage.txt
 /absolute_agony/temp_audio.mp3
+/build_only.sh
