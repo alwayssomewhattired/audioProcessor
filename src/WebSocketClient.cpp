@@ -119,6 +119,8 @@ void WebSocketClient::on_message(connection_hdl, client::message_ptr msg) {
         }
         else if (received_message == "user_upload") {
             std::cout << "Received user's audio!" << std::endl;
+            audio_source_name = root.get("s3_key", "").asString();
+            std::cout << "Source name: " << audio_source_name << std::endl;
             {
                 std::lock_guard<std::mutex> lock(mtx);
                 condition_met = true;

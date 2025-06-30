@@ -168,6 +168,7 @@ int main()
 		ws.wait_for_condition();
 		// parse audio
 		AudioFileParse parser;
+		parser.downloadAudioFileFromS3(config.bucketName, ws.get_audio_source_name());
 		parser.readAudioFileAsMono("temp_audio.mp3");
 		int n = parser.size();
 		std::cout << "User audio size: " << n << std::endl;
