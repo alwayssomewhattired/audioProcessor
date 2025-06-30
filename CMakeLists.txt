@@ -20,6 +20,9 @@ target_include_directories(absolute_agony PRIVATE ${CMAKE_SOURCE_DIR}/packages
                                                   ${CMAKE_SOURCE_DIR}/lib
 )
 
+message(STATUS "CMAKE_PREFIX_PATH = ${CMAKE_PREFIX_PATH}")
+message(STATUS "CMAKE_TOOLCHAIN_FILE = ${CMAKE_TOOLCHAIN_FILE}")
+
 
 find_package(FFTW3 CONFIG REQUIRED)
 find_package(AWSSDK CONFIG REQUIRED COMPONENTS s3 core)

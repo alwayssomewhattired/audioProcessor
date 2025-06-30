@@ -14,7 +14,8 @@ git-auto-pull.service
 build
 build_run.sh
 run.sh
-
+build_only.sh
+CMakePresets.json
 
 # User-specific files
 *.rsuser
@@ -382,4 +383,3 @@ FodyWeavers.xsd
 /absolute_agony/output.wav
 /absolute_agony/sampleStorage.txt
 /absolute_agony/temp_audio.mp3
-/build_only.sh

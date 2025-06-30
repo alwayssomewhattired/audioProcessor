@@ -144,17 +144,60 @@ int main()
 	else {
 		std::cerr << "MY_CONTROL_NOTE not set." << std::endl;
 	}
+	////////////////////////////////////////													////////////////////////////////////////
+	////////////////////////////////////////													////////////////////////////////////////
+
+	//						USER_UPLOAD_PATH
 
 	if (my_control_source == "user_source") {
-		// PUT LOGIC HERE .....
 		std::cout << "user_source path taken!" << std::endl;
+		// PUT LOGIC HERE .....
+		// SEND "source_ready" TO WEBSOCKET SERVER ...
+		// PAUSE EXECUTION UNTIL AUDIO RECEIVED
+		// PARSE AUDIO
+		// SEND FINISHED AUDIO TO WEBSOCKET SERVER
+		// CLEANUP/FINISH
+		Json::Value message;
+		message["action"] = "sendMessage";
+		message["bdoy"] = "source_ready";
+		Json::StreamWriterBuilder writer;
+		std::string message_str = Json::writeString(writer, message);
+		std::cout << "Sending to API: " << message_str << std::endl;
+		ws.send_message(message_str);
+
+		ws.wait_for_condition();
+		// parse audio
+		AudioFileParse parser;
+		parser.readAudioFileAsMono("temp_audio.mp3");
+		int n = parser.size();
+		std::cout << "User audio size: " << n << std::endl;
+
+		int num_chunks = (n + config.chunkSize - 1) / config.chunkSize;
+
+		parser.applyHanningWindow();
+
+		fftProcessor.compute(parser.getAudioData(), my_control_note, false);
+
+		const auto& chunks = fftProcessor.getMagnitudes();
+		const std::vector<double>& audio_copy = parser.getAudioData();
+
+		std::cout << "sampleStorage: " << fftProcessor.getSampleStorage().size() << std::endl;
+
+		AudioUploader uploader(config.bucketName, config.region);
+
+		uploader.uploadIfReady(fftProcessor.getSampleStorage(), config.productDurationSamples, outputName, ws, my_user_id);
+
 		ws.reset_condition();
 		ws.stop();
-		std::cout << "BOOOOM!" << std::endl;
 		std::cout << "FINISHED" << std::endl;
 		return 0;
 	}
 
+
+	////////////////////////////////////////													////////////////////////////////////////
+	////////////////////////////////////////													////////////////////////////////////////
+
+	//						RANDOM_SOURCE_PATH
 	while (fftProcessor.getSampleStorage().size() < config.productDurationSamples) {
 
 

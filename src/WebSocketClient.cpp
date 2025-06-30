@@ -117,6 +117,14 @@ void WebSocketClient::on_message(connection_hdl, client::message_ptr msg) {
             }
             cv.notify_one();
         }
+        else if (received_message == "user_upload") {
+            std::cout << "Received user's audio!" << std::endl;
+            {
+                std::lock_guard<std::mutex> lock(mtx);
+                condition_met = true;
+            }
+            cv.notify_one();
+        }
     }
     else {
         std::cerr << "Failed to parse JSON: " << errs << std::endl;
