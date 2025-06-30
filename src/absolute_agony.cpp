@@ -159,7 +159,7 @@ int main()
 		// CLEANUP/FINISH
 		Json::Value message;
 		message["action"] = "sendMessage";
-		message["bdoy"] = "source_ready";
+		message["body"] = "source_ready";
 		Json::StreamWriterBuilder writer;
 		std::string message_str = Json::writeString(writer, message);
 		std::cout << "Sending to API: " << message_str << std::endl;
