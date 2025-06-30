@@ -161,6 +161,7 @@ int main()
 		message["action"] = "sendMessage";
 		message["body"] = "source_ready";
 		message["user_id"] = my_user_id;
+		message["source_ready"] = "source_ready";
 		Json::StreamWriterBuilder writer;
 		std::string message_str = Json::writeString(writer, message);
 		std::cout << "Sending to API: " << message_str << std::endl;
