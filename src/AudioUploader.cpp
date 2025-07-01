@@ -27,11 +27,15 @@ AudioUploader::~AudioUploader() {
 }
 
 bool AudioUploader::uploadIfReady(const std::vector<double>& samples, size_t sampleThreshold, const std::string& outputName, WebSocketClient& ws, const std::string userId) {
-	if (samples.size() < sampleThreshold)
+	if (samples.size() < sampleThreshold) {
+		std::cout << "sampledinfinite did not meet required length" << std::endl;
 		return false;
+	}
 
-	if (!writeWavFile(samples, outputName))
+	if (!writeWavFile(samples, outputName)) {
+		std::cout << "Could not write to WavFile" << std::endl;
 		return false;
+	}
 
 	auto input_data = Aws::MakeShared<Aws::FStream>("AllocTag", outputName, std::ios_base::in | std::ios_base::binary);
 	if (!input_data->good()) {

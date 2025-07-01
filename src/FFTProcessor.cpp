@@ -36,7 +36,8 @@ void FFTProcessor::compute(const std::vector<double>& audioData, double targetFr
 	int numChunks = (n + m_chunkSize - 1) / m_chunkSize;
 
 	for (int chunk = 0; chunk < numChunks; ++chunk) {
-		//std::cout << "Chunk " << chunk << ": controlNote = " << controlNote << ", m_fftSize = " << m_fftSize << "\n";
+		//		THIS CONSOLE OUT SLOWS DOWN. BE CAREFUL
+		std::cout << "Chunk " << chunk << ": controlNote = " << targetFrequency << ", m_fftSize = " << m_fftSize << "\n";
 
 		std::fill(m_realInput, m_realInput + m_chunkSize, 0);
 		int start = chunk * m_chunkSize;
