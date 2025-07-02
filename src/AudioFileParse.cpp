@@ -9,6 +9,7 @@
 #include <fstream>
 #include <iterator>
 #include <cmath>
+#include <filesystem>
 
 
 
@@ -102,6 +103,9 @@ bool AudioFileParse::downloadAudioFileFromS3(const Aws::String& bucketName, cons
 			outFile.write(s3Data.data(), s3Data.size());
 			success = true;
 			outFile.close();
+
+			auto fileSize = std::filesystem::file_size(tempFile);
+			std::cout << "Temp file size: " << fileSize << "bytes" << std::endl;
 		}
 		else {
 			std::cerr << "Failed to read file from S3: " << outcome.GetError().GetMessage() << std::endl;
