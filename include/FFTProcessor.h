@@ -13,7 +13,7 @@ public:
 	const std::vector<double>& getSampleStorage() const;
 
 private:
-	bool isProminentPeak(const std::vector<double>& vec, double value, double ratio);
+	bool isProminentPeak(const std::vector<double>& vec, double value, double ratio = 0.8);
 	void storeChunkIfProminent(const std::vector<double>& samples, int counter, double magnitude);
 
 	int m_chunkSize;

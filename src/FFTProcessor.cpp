@@ -60,7 +60,7 @@ void FFTProcessor::compute(const std::vector<double>& audioData, double targetFr
 
 		if (controlNoteBin >= 0 && controlNoteBin < m_fftSize) {
 			double controlMagnitude = m_magnitudeChunks.back()[controlNoteBin];
-			if (isProminentPeak(m_magnitudeChunks.back(), controlMagnitude)) {
+			if (isProminentPeak(m_magnitudeChunks.back(), controlMagnitude, 0.8)) {
 				std::cout << "Prominent peak found!" << std::endl;
 				storeChunkIfProminent(audioData, chunk, controlMagnitude);
 			}
