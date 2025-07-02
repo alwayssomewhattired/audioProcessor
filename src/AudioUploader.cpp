@@ -27,10 +27,17 @@ AudioUploader::~AudioUploader() {
 }
 
 bool AudioUploader::uploadIfReady(const std::vector<double>& samples, size_t sampleThreshold, const std::string& outputName, WebSocketClient& ws, const std::string userId) {
-	if (samples.size() < sampleThreshold) {
-		std::cout << "sampledinfinite did not meet required length" << std::endl;
-		return false;
-	}
+	
+	// MAKE A FEATURE CONTROL FOR THIS !!!!!!!!!!!! IMPORTANCE !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	// //
+	// //
+	// //
+	// //
+	// //
+	//if (samples.size() < sampleThreshold) {
+	//	std::cout << "sampledinfinite did not meet required length" << std::endl;
+	//	return false;
+	//}
 
 	if (!writeWavFile(samples, outputName)) {
 		std::cout << "Could not write to WavFile" << std::endl;
