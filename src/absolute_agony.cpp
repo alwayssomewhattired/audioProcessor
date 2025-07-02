@@ -171,6 +171,13 @@ int main()
 		// parse audio
 		AudioFileParse parser;
 		parser.downloadAudioFileFromS3(config.bucketName, ws.get_audio_source_name());
+
+		const auto& samples = parser.getAudioData();
+		std::cout << "First few samples: ";
+		for (int i = 0; i < 5; ++i)
+			std::cout << samples[i] << " ";
+		std::cout << std::endl;
+
 		parser.readAudioFileAsMono("temp_audio.mp3");
 		int n = parser.size();
 		std::cout << "User audio size: " << n << std::endl;
