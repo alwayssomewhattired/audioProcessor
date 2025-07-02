@@ -172,19 +172,6 @@ int main()
 		AudioFileParse parser;
 		parser.downloadAudioFileFromS3(config.bucketName, ws.get_audio_source_name());
 
-
-
-		const auto& samples = parser.getAudioData();
-		std::cout << "Audio sample count: " << samples.size() << std::endl;
-		if (samples.empty()) {
-			std::cerr << "[ERROR] getAudioData() returned empty data!" << std::endl;
-			return 1; //
-		}
-		std::cout << "First few samples: ";
-		for (int i = 0; i < 5; ++i)
-			std::cout << samples[i] << " ";
-		std::cout << std::endl;
-
 		parser.readAudioFileAsMono("temp_audio.mp3");
 		int n = parser.size();
 		std::cout << "User audio size: " << n << std::endl;
@@ -192,6 +179,9 @@ int main()
 		int num_chunks = (n + config.chunkSize - 1) / config.chunkSize;
 
 		parser.applyHanningWindow();
+
+		std::cout << "User audio size after Hanning: " << parser.size() << std::endl;
+
 
 		fftProcessor.compute(parser.getAudioData(), my_control_note, false);
 
