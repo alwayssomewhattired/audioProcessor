@@ -60,7 +60,7 @@ void FFTProcessor::compute(const std::vector<double>& audioData, double targetFr
 
 		if (controlNoteBin >= 0 && controlNoteBin < m_fftSize) {
 			double controlMagnitude = m_magnitudeChunks.back()[controlNoteBin];
-			if (isProminentPeak(m_magnitudeChunks.back(), controlMagnitude, 0.8)) {
+			if (isProminentPeak(m_magnitudeChunks.back(), controlMagnitude)) {
 				std::cout << "Prominent peak found!" << std::endl;
 				storeChunkIfProminent(audioData, chunk, controlMagnitude);
 			}
@@ -81,7 +81,7 @@ void FFTProcessor::compute(const std::vector<double>& audioData, double targetFr
 //}
 
 // PROMINENCE STRENGTH DEMO
-bool FFTProcessor::isProminentPeak(const std::vector<double>& vec, double value, double ratio = 0.8) {
+bool FFTProcessor::isProminentPeak(const std::vector<double>& vec, double value, double ratio) {
 	if (value == 0) return false;
 
 	double maxVal = *std::max_element(vec.begin(), vec.end());
