@@ -72,13 +72,24 @@ void FFTProcessor::compute(const std::vector<double>& audioData, double targetFr
 	}
 }
 
-bool FFTProcessor::isProminentPeak(const std::vector<double>& vec, double value) {
+//bool FFTProcessor::isProminentPeak(const std::vector<double>& vec, double value) {
+//	if (value == 0) return false;
+//	for (double v : vec) {
+//		if (value < v) return false;
+//	}
+//	return true;
+//}
+
+// PROMINENCE STRENGTH DEMO
+bool FFTProcessor::isProminentPeak(const std::vector<double>& vec, double value, double ratio = 0.8) {
 	if (value == 0) return false;
-	for (double v : vec) {
-		if (value < v) return false;
-	}
-	return true;
+
+	double maxVal = *std::max_element(vec.begin(), vec.end());
+
+	// Check if value is within ratio% of the peak
+	return value >= ratio * maxVal;
 }
+
 
 void FFTProcessor::storeChunkIfProminent(const std::vector<double>& samples, int counter, double magnitude) {
 	int start = counter * m_chunkSize;
