@@ -50,9 +50,12 @@ void FFTProcessor::compute(const std::vector<double>& audioData, double targetFr
 		for (int i = 0; i < m_fftSize; ++i) {
 			magnitudes[i] = std::sqrt(m_complexOutput[i][0] * m_complexOutput[i][0] +
 				m_complexOutput[i][1] * m_complexOutput[i][1]);
+			//		THIS CONSOLE OUT SLOWS DOWN. BE CAREFUL
+			std::cout << "Magnitudes Values: " << magnitudes[i] << std::endl;
 		}
 
 		m_magnitudeChunks.push_back(std::move(magnitudes));
+		//		THIS CONSOLE OUT SLOWS DOWN. BE CAREFUL
 		//std::cout << "controlNote: " << controlNote << ", m_fftSize: " << m_fftSize << std::endl;
 
 		if (controlNoteBin >= 0 && controlNoteBin < m_fftSize) {
