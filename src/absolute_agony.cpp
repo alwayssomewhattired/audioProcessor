@@ -188,8 +188,8 @@ int main()
 		const auto& chunks = fftProcessor.getMagnitudes();
 		const std::vector<double>& audio_copy = parser.getAudioData();
 		std::cout << "User audio size after FFT: " << audio_copy.size() << std::endl;
-
-		std::cout << "sampleStorage: " << fftProcessor.getSampleStorage().size() << std::endl;
+		std::cout << "Magnitudes size: " << fftProcessor.getMagnitudes().size() << std::endl;
+		std::cout << "sampleStorage size: " << fftProcessor.getSampleStorage().size() << std::endl;
 
 		AudioUploader uploader(config.bucketName, config.region);
 
